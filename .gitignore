@@ -52,3 +52,6 @@ Branding_package/**/*.eps
 Branding_package/**/*.ai
 Branding_package/**/*.pdf
 .DS_Store
+
+# essais de style (locaux, pas sur le site)
+/design/style-options/
