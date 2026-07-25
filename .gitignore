@@ -42,3 +42,13 @@ next-env.d.ts
 
 # local Claude Code settings
 .claude/
+
+# captures de vérification
+/shots/
+
+# Formats print lourds du branding package (~140 Mo) — inutiles au web.
+# Les originaux restent sur le disque; à sauvegarder ailleurs (Drive/Dropbox).
+Branding_package/**/*.eps
+Branding_package/**/*.ai
+Branding_package/**/*.pdf
+.DS_Store
