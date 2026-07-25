@@ -19,12 +19,10 @@ export const content = {
     cta: "Commencer maintenant",
   },
 
+  // Le hero ne porte que le titre et un bouton : la scène illustrée fait le reste.
   hero: {
-    eyebrow: "Email & SMS marketing pour ecommerce",
-    title: ["On fait de vos", "emails", "votre meilleur vendeur"],
-    lead: "Stratégie qui convertit, design qui se démarque. Chaque email est dessiné à la main pour votre marque — jamais un template recyclé.",
+    title: ["Vos emails,", "votre meilleur vendeur"],
     cta: "Commencer maintenant",
-    ctaSecondary: "Voir nos créations",
     scroll: "Défiler",
   },
 
