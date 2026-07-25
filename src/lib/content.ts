@@ -97,32 +97,16 @@ export const content = {
     title: ["Woodez", "vs le reste"],
     lead: "Il n'y a pas de prix fixe : une marque qui démarre n'a pas les mêmes besoins qu'une marque à sept chiffres. On bâtit une offre à votre taille — mais voici ce qui ne change jamais.",
     columns: ["Woodez", "Agence classique", "À l'interne"],
+    /** oui | bof | non — se lit d'un coup d'œil, sans rien avoir à lire. */
     rows: [
-      {
-        label: "Design des emails",
-        values: ["Sur mesure, à chaque envoi", "Template réutilisé", "Ça dépend de qui est libre"],
-      },
-      {
-        label: "Stratégie + créatif",
-        values: ["Les deux, par la même équipe", "Deux équipes, deux factures", "À vous de tout coordonner"],
-      },
-      {
-        label: "Qui fait le travail",
-        values: ["Le fondateur, directement", "Un junior assigné", "Votre équipe déjà débordée"],
-      },
-      {
-        label: "Mise en ligne",
-        values: ["14 jours", "1 à 2 mois", "Quand vous aurez le temps"],
-      },
-      {
-        label: "Coût",
-        values: ["Adapté à votre taille", "Forfait fixe, peu importe vos besoins", "Un salaire à temps plein"],
-      },
-      {
-        label: "Engagement",
-        values: ["Mois par mois", "Contrat de 6 à 12 mois", "Contrat d'emploi"],
-      },
+      { label: "Design 100 % sur mesure", values: ["oui", "non", "bof"] },
+      { label: "Stratégie et créatif réunis", values: ["oui", "bof", "non"] },
+      { label: "Le fondateur sur votre compte", values: ["oui", "non", "non"] },
+      { label: "En ligne en 14 jours", values: ["oui", "non", "non"] },
+      { label: "Prix adapté à votre taille", values: ["oui", "non", "bof"] },
+      { label: "Sans engagement", values: ["oui", "non", "bof"] },
     ],
+    legend: { oui: "Inclus", bof: "Ça dépend", non: "Non" },
   },
 
   faq: {
