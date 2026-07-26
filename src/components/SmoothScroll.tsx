@@ -16,7 +16,9 @@ export default function SmoothScroll() {
 
     gsap.registerPlugin(ScrollTrigger)
 
-    const lenis = new Lenis({ duration: 1.1, smoothWheel: true })
+    // `anchors` fait défiler jusqu'à la section au lieu de l'atteindre d'un
+    // saut : Lenis intercepte les clics sur les liens en #ancre.
+    const lenis = new Lenis({ duration: 1.1, smoothWheel: true, anchors: true })
 
     lenis.on("scroll", ScrollTrigger.update)
 

@@ -84,7 +84,7 @@ export default function Reveal() {
         ))}
       </div>
 
-      <p className="relative mx-auto max-w-5xl text-center text-[clamp(1.6rem,4vw,3.25rem)] leading-[1.32] font-bold">
+      <p className="prose-balanced relative mx-auto max-w-5xl text-center text-[clamp(1.6rem,4vw,3.25rem)] leading-[1.32] font-bold">
         {words.map((word, i) => (
           <span
             key={`${word}-${i}`}

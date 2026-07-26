@@ -42,8 +42,8 @@
     background: var(--color-cream);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    /* Inter respire large par défaut ; on resserre légèrement le texte courant. */
-    letter-spacing: -0.011em;
+    /* Inter respire large par défaut ; on resserre le texte courant. */
+    letter-spacing: -0.019em;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
@@ -68,6 +68,27 @@
   /* Empêche un mot seul sur la dernière ligne d'un paragraphe. */
   .prose-balanced {
     text-wrap: pretty;
+  }
+
+  /* Titres au même relief que les boutons : contour noir, remplissage clair,
+     ombre portée dure. `paint-order` place le contour derrière le
+     remplissage, sinon il ronge l'intérieur des lettres. */
+  .display-3d {
+    color: var(--color-cream);
+    -webkit-text-stroke: 0.052em var(--color-ink);
+    paint-order: stroke fill;
+    text-shadow: 0.055em 0.055em 0 var(--color-ink);
+  }
+
+  /* Masque de révélation ligne par ligne. Le rembourrage laisse passer les
+     accents (É, À) que le masque coupait, et la marge négative annule son
+     effet sur la mise en page. */
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-top: 0.18em;
+    margin-top: -0.18em;
+    padding-bottom: 0.1em;
   }
 
   /* Le trait épais du langage sticker de la marque */

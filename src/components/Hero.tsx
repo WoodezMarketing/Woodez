@@ -50,19 +50,22 @@ export default function Hero() {
         {/* La largeur de bande commande la taille des nuages : plus la bande
             est étroite, plus les nuages sont petits. Elle doit malgré tout
             rester au-dessus de 100 vw, sinon la boucle laisse un trou. */}
+        {/* Sur mobile les bandes descendent bien plus bas : elles doivent
+            passer derrière Woodez, jamais derrière le titre ni le bouton, qui
+            devenaient illisibles. */}
         <Clouds
           src="/hero/clouds-b-v2.png"
           width={135}
           duration={190}
           opacity={0.4}
-          className="inset-x-0 top-[3%]"
+          className="inset-x-0 top-[46%] sm:top-[3%]"
         />
         <Clouds
           src="/hero/clouds-a-v2.png"
           width={115}
           duration={120}
           opacity={0.75}
-          className="inset-x-0 top-[26%] sm:top-[22%]"
+          className="inset-x-0 top-[58%] sm:top-[22%]"
         />
       </div>
 
@@ -70,14 +73,24 @@ export default function Hero() {
         data-copy
         className="relative z-20 flex w-full flex-1 flex-col items-center px-5 pt-24 text-center sm:px-8 sm:pt-28"
       >
-        {/* Titre en encre : le vert de marque disparaîtrait sur le coup de
-            pinceau vert de la scène juste derrière. */}
-        <h1 className="display max-w-[14ch] text-[clamp(2.4rem,5.2vw,4.2rem)] text-ink sm:max-w-none">
-          {content.hero.title.map((line) => (
-            <span key={line} data-line className="block overflow-hidden pb-[0.08em]">
-              <span className="block">{line}</span>
-            </span>
-          ))}
+        {/* Deux découpes distinctes : le repli automatique ne tombe pas au bon
+            endroit sur petit écran, on impose donc les lignes. */}
+        <h1 className="display display-3d text-[clamp(2.4rem,5.2vw,4.2rem)]">
+          <span className="block sm:hidden">
+            {content.hero.titleMobile.map((line) => (
+              <span key={line} data-line className="line-mask">
+                <span className="block">{line}</span>
+              </span>
+            ))}
+          </span>
+
+          <span className="hidden sm:block">
+            {content.hero.title.map((line) => (
+              <span key={line} data-line className="line-mask">
+                <span className="block">{line}</span>
+              </span>
+            ))}
+          </span>
         </h1>
 
         <p

@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -70,17 +71,21 @@ export default function Comparison() {
               sépare les deux camps au lieu d'être un mot noyé dans le titre. */}
           <h2
             data-heading
-            className="display mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[clamp(2.2rem,6.4vw,4.75rem)]"
+            className="display display-3d mt-6 flex flex-nowrap items-center justify-center gap-x-2 text-[clamp(1.9rem,6vw,4.5rem)] sm:gap-x-3"
           >
-            <span className="block overflow-hidden pb-[0.08em]">
+            <span className="line-mask">
               <span className="block text-green">{content.comparison.title[0]}</span>
             </span>
 
-            <span data-vs className="sticker inline-flex rounded-full bg-lemon px-5 py-1 text-[0.42em]">
+            <span
+              data-vs
+              className="sticker flex aspect-square w-[0.9em] shrink-0 items-center justify-center rounded-full bg-lemon text-[0.34em] text-ink"
+              style={{ WebkitTextStroke: "0", textShadow: "none" }}
+            >
               vs
             </span>
 
-            <span className="block overflow-hidden pb-[0.08em]">
+            <span className="line-mask">
               <span className="block">{content.comparison.title[1]}</span>
             </span>
           </h2>
@@ -90,53 +95,66 @@ export default function Comparison() {
           </p>
         </div>
 
-        <div data-table className="mt-14 overflow-x-auto pb-2">
-          <div className="min-w-[34rem]">
-            {/* En-têtes de colonnes */}
-            <div className="grid grid-cols-[1.4fr_repeat(3,minmax(0,1fr))] gap-2 pb-3 sm:gap-3">
-              <div />
-              {columns.map((col, i) => (
-                <div
-                  key={col}
-                  className={`sticker flex items-center justify-center rounded-2xl px-2 py-3 text-center ${
-                    i === 0 ? "bg-green text-cream" : "bg-cream text-ink/60"
-                  }`}
-                >
-                  <span className="display text-sm leading-tight sm:text-base">{col}</span>
-                </div>
-              ))}
-            </div>
+        {/* Aucun défilement latéral : la grille tient dans la largeur du
+            téléphone. Le rembourrage droit laisse la place aux ombres portées,
+            qui se faisaient couper par le bord de la section. */}
+        <div data-table className="mt-14 pr-2">
+          {/* En-têtes de colonnes */}
+          <div className="grid grid-cols-[1.05fr_repeat(3,minmax(0,1fr))] gap-1.5 pb-3 sm:grid-cols-[1.4fr_repeat(3,minmax(0,1fr))] sm:gap-3">
+            <div />
+            {columns.map((col, i) => (
+              <div
+                key={col}
+                className={`sticker flex items-center justify-center rounded-2xl px-1.5 py-2.5 text-center sm:px-2 sm:py-3 ${
+                  i === 0 ? "bg-green text-cream" : "bg-cream text-ink/60"
+                }`}
+              >
+                {i === 0 ? (
+                  // La tête de Woodez remplace le mot : la colonne est étroite
+                  // sur mobile et le logo se lit mieux qu'un nom tronqué.
+                  <Image
+                    src="/brand/mascot.svg"
+                    alt={col}
+                    width={44}
+                    height={44}
+                    className="size-9 sm:size-12"
+                  />
+                ) : (
+                  <span className="display text-[0.68rem] leading-tight sm:text-base">{col}</span>
+                )}
+              </div>
+            ))}
+          </div>
 
-            {/* Une ligne = un critère, trois pastilles */}
-            <div className="space-y-2 sm:space-y-3">
-              {rows.map((row) => (
-                <div
-                  key={row.label}
-                  data-row
-                  className="grid grid-cols-[1.4fr_repeat(3,minmax(0,1fr))] items-center gap-2 rounded-2xl bg-cream/60 sm:gap-3"
-                >
-                  <div className="px-3 py-4 text-sm leading-snug font-bold sm:text-base">
-                    {row.label}
-                  </div>
-
-                  {row.values.map((value, i) => {
-                    const mark = MARKS[value as Verdict]
-                    return (
-                      <div key={i} className="flex justify-center py-3">
-                        <span
-                          data-mark
-                          title={mark.label}
-                          className={`sticker flex size-11 items-center justify-center rounded-full text-lg font-bold sm:size-12 sm:text-xl ${mark.className}`}
-                        >
-                          <span aria-hidden>{mark.glyph}</span>
-                          <span className="sr-only">{mark.label}</span>
-                        </span>
-                      </div>
-                    )
-                  })}
+          {/* Une ligne = un critère, trois pastilles */}
+          <div className="space-y-2 sm:space-y-3">
+            {rows.map((row) => (
+              <div
+                key={row.label}
+                data-row
+                className="grid grid-cols-[1.05fr_repeat(3,minmax(0,1fr))] items-center gap-1.5 rounded-2xl bg-cream/60 sm:grid-cols-[1.4fr_repeat(3,minmax(0,1fr))] sm:gap-3"
+              >
+                <div className="px-2.5 py-3.5 text-[0.8rem] leading-snug font-bold sm:px-3 sm:py-4 sm:text-base">
+                  {row.label}
                 </div>
-              ))}
-            </div>
+
+                {row.values.map((value, i) => {
+                  const mark = MARKS[value as Verdict]
+                  return (
+                    <div key={i} className="flex justify-center py-3">
+                      <span
+                        data-mark
+                        title={mark.label}
+                        className={`sticker flex size-9 items-center justify-center rounded-full text-base font-bold sm:size-12 sm:text-xl ${mark.className}`}
+                      >
+                        <span aria-hidden>{mark.glyph}</span>
+                        <span className="sr-only">{mark.label}</span>
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+            ))}
           </div>
         </div>
 

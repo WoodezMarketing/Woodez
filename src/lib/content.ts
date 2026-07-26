@@ -27,6 +27,8 @@ export const content = {
     // vienne pas se poser sur la tête de Woodez. Sur mobile chaque ligne se
     // replie naturellement, ce qui en donne quatre.
     title: ["Fais revenir tes clients.", "Encore et encore."],
+    /** Découpe imposée sur petit écran, le repli naturel ne tombe pas bien. */
+    titleMobile: ["Fais revenir tes", "clients. Encore", "et encore."],
     kicker:
       "Le email et SMS marketing conçu pour fidéliser, automatiser et faire grandir ton commerce.",
     cta: "Commencer maintenant",
@@ -79,9 +81,9 @@ export const content = {
 
   // Section de révélation : le texte s'allume mot par mot au défilement.
   reveal: {
-    text: "On augmente le revenu de ta boutique jusqu'à 40 % en installant un vrai système de rétention, et en habillant chaque envoi aux couleurs de ta marque.",
+    text: "On augmente le revenu de ta boutique jusqu'à 40% en installant un vrai système de rétention, et en habillant chaque envoi aux couleurs de ta marque.",
     /** Ces mots restent en vert une fois allumés. */
-    highlight: ["40 %", "rétention", "marque"],
+    highlight: ["40%", "rétention", "marque"],
   },
 
   services: {

@@ -14,8 +14,7 @@ export default function Nav() {
   // Repli au défilement vers le bas, retour au défilement vers le haut.
   // Uniquement sur grand écran : en mobile la barre est déjà minimale.
   useEffect(() => {
-    const desktop = window.matchMedia("(min-width: 1024px)")
-    if (!desktop.matches) return
+    if (!window.matchMedia("(min-width: 1024px)").matches) return
 
     let last = window.scrollY
     const onScroll = () => {
@@ -23,15 +22,19 @@ export default function Nav() {
       if (Math.abs(y - last) < 12) return // ignore la micro-oscillation
       const next = y > last && y > 160
       last = y
-      setCollapsed((prev) => (prev === next ? prev : next))
+      setCollapsed((prev) => {
+        if (prev === next) return prev
+        if (next) setOpen(false) // on ne replie pas sur un menu resté ouvert
+        return next
+      })
     }
 
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  // Le « sploosh » : les pastilles s'écrasent en partant, rebondissent en
-  // revenant. Sans ça la bascule ressemble à un simple display:none.
+  // Le « sploosh » : les pastilles s'écrasent en partant, la bulle du logo
+  // rebondit. Sans ça la bascule ressemble à un simple display:none.
   useEffect(() => {
     const el = root.current
     if (!el) return
@@ -39,55 +42,32 @@ export default function Nav() {
 
     const ctx = gsap.context(() => {
       const parts = gsap.utils.toArray<HTMLElement>("[data-nav-part]")
-      const burger = el.querySelector("[data-nav-burger]")
 
-      if (collapsed) {
-        gsap.to(parts, {
-          scaleX: 0.35,
-          scaleY: 0.8,
-          opacity: 0,
-          duration: 0.32,
-          ease: "power3.in",
-          stagger: 0.04,
-          pointerEvents: "none",
-        })
-        gsap.fromTo(
-          burger,
-          { scale: 0, rotate: -90 },
-          { scale: 1, rotate: 0, duration: 0.5, ease: "back.out(2.6)", delay: 0.12 },
-        )
-        gsap.fromTo(
-          "[data-nav-logo]",
-          { scaleX: 1.25, scaleY: 0.78 },
-          { scaleX: 1, scaleY: 1, duration: 0.7, ease: "elastic.out(1, 0.45)", delay: 0.2 },
-        )
-      } else {
-        gsap.to(parts, {
-          scaleX: 1,
-          scaleY: 1,
-          opacity: 1,
-          duration: 0.55,
-          ease: "back.out(1.8)",
-          stagger: 0.06,
-          pointerEvents: "auto",
-        })
-        gsap.to(burger, { scale: 0, rotate: 90, duration: 0.28, ease: "power3.in" })
-        gsap.fromTo(
-          "[data-nav-logo]",
-          { scaleX: 0.82, scaleY: 1.18 },
-          { scaleX: 1, scaleY: 1, duration: 0.7, ease: "elastic.out(1, 0.45)" },
-        )
-      }
+      gsap.to(parts, {
+        scaleX: collapsed ? 0.35 : 1,
+        scaleY: collapsed ? 0.8 : 1,
+        opacity: collapsed ? 0 : 1,
+        duration: collapsed ? 0.32 : 0.55,
+        ease: collapsed ? "power3.in" : "back.out(1.8)",
+        stagger: collapsed ? 0.04 : 0.06,
+        pointerEvents: collapsed ? "none" : "auto",
+      })
+
+      gsap.fromTo(
+        "[data-nav-logo]",
+        collapsed ? { scaleX: 1.25, scaleY: 0.78 } : { scaleX: 0.82, scaleY: 1.18 },
+        { scaleX: 1, scaleY: 1, duration: 0.7, ease: "elastic.out(1, 0.45)", delay: 0.15 },
+      )
     }, el)
 
     return () => ctx.revert()
   }, [collapsed])
 
-  const burgerOpen = open
+  const links = content.nav.links
 
   return (
     <header ref={root} className="fixed inset-x-0 top-0 z-50">
-      <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-4 py-4 sm:px-6">
+      <div className="mx-auto flex max-w-[1400px] items-start justify-between gap-4 px-4 py-4 sm:px-6">
         <a
           href="#top"
           aria-label="Woodez, retour en haut"
@@ -108,7 +88,7 @@ export default function Nav() {
           data-nav-part
           className="sticker hidden items-center gap-1 rounded-full bg-cream px-2 py-2 lg:flex"
         >
-          {content.nav.links.map((link) => (
+          {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -119,70 +99,77 @@ export default function Nav() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-start gap-2">
           <span data-nav-part className="hidden sm:block">
             <Button href="#contact" tone="green">
               {content.nav.cta}
             </Button>
           </span>
 
-          {/* Toujours présent : simplement caché derrière une échelle 0 sur
-              grand écran tant que la barre complète est déployée. */}
-          <button
-            type="button"
-            data-nav-burger
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={burgerOpen}
-            aria-label={burgerOpen ? "Fermer le menu" : "Ouvrir le menu"}
-            className={`sticker flex size-12 items-center justify-center rounded-full bg-cream ${
-              collapsed ? "lg:flex" : "lg:hidden"
-            }`}
+          {/* La bulle du menu : refermée c'est un simple rond, ouverte elle
+              s'étire vers le bas et laisse apparaître les liens. Ce n'est pas
+              un panneau séparé, c'est la même pastille qui grandit. */}
+          <div
+            className={`sticker overflow-hidden rounded-[1.75rem] bg-cream transition-all duration-500 ${
+              open ? "w-64" : "w-12"
+            } ${collapsed ? "lg:block" : "lg:hidden"}`}
+            style={{ transitionTimingFunction: "cubic-bezier(0.34, 1.4, 0.5, 1)" }}
           >
-            <span className="relative block h-4 w-5">
-              <span
-                className={`absolute left-0 h-[3px] w-5 rounded-full bg-ink transition-all duration-300 ${
-                  burgerOpen ? "top-1.5 rotate-45" : "top-0"
-                }`}
-              />
-              <span
-                className={`absolute top-1.5 left-0 h-[3px] w-5 rounded-full bg-ink transition-opacity duration-200 ${
-                  burgerOpen ? "opacity-0" : "opacity-100"
-                }`}
-              />
-              <span
-                className={`absolute left-0 h-[3px] w-5 rounded-full bg-ink transition-all duration-300 ${
-                  burgerOpen ? "top-1.5 -rotate-45" : "top-3"
-                }`}
-              />
-            </span>
-          </button>
-        </div>
-      </div>
-
-      <div
-        className={`mx-4 origin-top overflow-hidden transition-all duration-300 ${
-          burgerOpen ? "max-h-96 opacity-100" : "pointer-events-none max-h-0 opacity-0"
-        }`}
-      >
-        <nav className="sticker flex flex-col gap-1 rounded-3xl bg-cream p-3">
-          {content.nav.links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setOpen(false)}
-              className="rounded-2xl px-4 py-3 font-semibold transition-colors hover:bg-mint"
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+              className="flex h-12 w-full items-center justify-end pr-[0.9rem]"
             >
-              {link.label}
-            </a>
-          ))}
-          <a
-            href="#contact"
-            onClick={() => setOpen(false)}
-            className="mt-1 rounded-2xl bg-green px-4 py-3 text-center font-bold text-cream"
-          >
-            {content.nav.cta}
-          </a>
-        </nav>
+              <span className="relative block h-4 w-5">
+                <span
+                  className={`absolute left-0 h-[3px] w-5 rounded-full bg-ink transition-all duration-300 ${
+                    open ? "top-1.5 rotate-45" : "top-0"
+                  }`}
+                />
+                <span
+                  className={`absolute top-1.5 left-0 h-[3px] w-5 rounded-full bg-ink transition-opacity duration-200 ${
+                    open ? "opacity-0" : "opacity-100"
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 h-[3px] w-5 rounded-full bg-ink transition-all duration-300 ${
+                    open ? "top-1.5 -rotate-45" : "top-3"
+                  }`}
+                />
+              </span>
+            </button>
+
+            <div
+              className={`grid transition-all duration-500 ${
+                open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+              }`}
+            >
+              <div className="overflow-hidden">
+                <nav className="flex flex-col gap-1 px-3 pb-3">
+                  {links.map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setOpen(false)}
+                      className="rounded-2xl px-4 py-3 text-right font-semibold whitespace-nowrap transition-colors hover:bg-mint"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                  <a
+                    href="#contact"
+                    onClick={() => setOpen(false)}
+                    className="mt-1 rounded-2xl bg-green px-4 py-3 text-center font-bold whitespace-nowrap text-cream"
+                  >
+                    {content.nav.cta}
+                  </a>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
   )

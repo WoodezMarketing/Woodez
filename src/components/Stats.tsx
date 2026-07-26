@@ -1,156 +1,167 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { content } from "@/lib/content"
-import { reveal, revealLines } from "@/lib/anim"
+import { revealLines } from "@/lib/anim"
 import { Sticker } from "./ui"
 
-const TONES: Record<string, string> = {
-  green: "bg-green text-cream",
-  lemon: "bg-lemon text-ink",
-  coral: "bg-coral text-ink",
-  violet: "bg-violet text-cream",
+const TONES: Record<string, { box: string; number: string }> = {
+  green: { box: "bg-green", number: "text-cream" },
+  lemon: { box: "bg-lemon", number: "text-ink" },
+  coral: { box: "bg-coral", number: "text-cream" },
+  violet: { box: "bg-violet", number: "text-cream" },
 }
 
+const ITEMS = content.stats.items
+
 /**
- * Les quatre chiffres arrivent l'un après l'autre plutôt qu'en bloc : chaque
- * carte est épinglée le temps d'un écran, se met en place, puis cède la sienne
- * à la suivante. Le fond dérive plus lentement que les cartes, ce qui donne la
- * profondeur.
+ * Une statistique à la fois. La section est épinglée le temps de la traverser
+ * et le chiffre change au fil du défilement : le carré de couleur porte la
+ * valeur, la carte claire l'explique. Les chiffres voisins restent visibles en
+ * filigrane au-dessus et en dessous, ce qui montre où l'on en est.
  */
 export default function Stats() {
   const root = useRef<HTMLElement>(null)
+  const numberRef = useRef<HTMLSpanElement>(null)
+  const [active, setActive] = useState(0)
 
   useEffect(() => {
     const el = root.current
     if (!el) return
 
     gsap.registerPlugin(ScrollTrigger)
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    if (reduced) return
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
     const ctx = gsap.context(() => {
-      revealLines("[data-stats-title] > span > span", { trigger: el, start: "top 75%" })
+      revealLines("[data-stats-title] > span > span", { trigger: el, start: "top 80%" })
 
-      gsap.utils.toArray<HTMLElement>("[data-stat]").forEach((card, i) => {
-        const number = card.querySelector<HTMLElement>("[data-count]")
-        const target = Number(card.dataset.value)
-        const tilt = i % 2 ? 9 : -9
-
-        // Entrée : la carte surgit du bas, franchement de travers, puis se
-        // redresse en rebondissant. Le décalage se fait carte par carte.
-        reveal(
-          card,
-          { yPercent: 110, rotate: tilt * 1.6, scale: 0.8, opacity: 0 },
-          {
-            yPercent: 0,
-            rotate: 0,
-            scale: 1,
-            opacity: 1,
-            duration: 1,
-            ease: "back.out(1.7)",
-            delay: i * 0.12,
-          },
-          { trigger: el, start: "top 78%" },
-        )
-
-        // Dérive continue pendant la traversée : chaque carte monte à sa
-        // vitesse et garde une légère inclinaison, ce qui creuse la profondeur.
-        gsap.fromTo(
-          card,
-          { y: 120 + i * 55, rotate: tilt },
-          {
-            y: -120 - i * 55,
-            rotate: -tilt,
-            ease: "none",
-            scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: 1 },
-          },
-        )
-
-        if (number) {
-          const counter = { v: 0 }
-          gsap.to(counter, {
-            v: target,
-            duration: 1.6,
-            ease: "power2.out",
-            scrollTrigger: { trigger: card, start: "top 85%" },
-            onUpdate: () => {
-              number.textContent = String(Math.round(counter.v))
-            },
-          })
-        }
-      })
-
-      // Les stickers de fond remontent doucement, plus lentement que tout.
-      gsap.to("[data-stat-bg]", {
-        yPercent: -22,
-        ease: "none",
-        scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: 1.4 },
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top top",
+        end: "bottom bottom",
+        onUpdate: (self) => {
+          // La progression est découpée en autant de paliers que de chiffres.
+          const index = Math.min(ITEMS.length - 1, Math.floor(self.progress * ITEMS.length * 0.99))
+          setActive((prev) => (prev === index ? prev : index))
+        },
       })
     }, el)
 
     return () => ctx.revert()
   }, [])
 
-  const [line1, line2] = content.stats.title
+  // Le compteur repart de zéro à chaque changement de statistique.
+  useEffect(() => {
+    const node = numberRef.current
+    if (!node) return
+    const target = ITEMS[active].value
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      node.textContent = String(target)
+      return
+    }
+
+    const counter = { v: 0 }
+    const tween = gsap.to(counter, {
+      v: target,
+      duration: 0.9,
+      ease: "power2.out",
+      onUpdate: () => {
+        node.textContent = String(Math.round(counter.v))
+      },
+    })
+    return () => {
+      tween.kill()
+    }
+  }, [active])
+
+  const item = ITEMS[active]
+  const tone = TONES[item.color] ?? TONES.green
+  const previous = ITEMS[active - 1]
+  const next = ITEMS[active + 1]
 
   return (
-    // Rembourrage large : les cartes voyagent beaucoup verticalement, il leur
-    // faut de la marge pour ne pas mordre les sections voisines.
-    <section ref={root} className="relative overflow-hidden bg-cream px-4 py-32 sm:px-6 sm:py-44">
-      {/* Stickers de marque en très grand, presque effacés : ils donnent de la
-          matière au fond sans jamais concurrencer les chiffres. */}
-      <div data-stat-bg aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.05]">
-        <div className="absolute -left-10 top-10 rotate-12">
-          <Sticker name="bone" size={280} />
-        </div>
-        <div className="absolute right-0 top-1/3 -rotate-12">
-          <Sticker name="ball" size={240} />
-        </div>
-        <div className="absolute bottom-0 left-1/3">
-          <Sticker name="bowl" size={300} />
-        </div>
-      </div>
+    <section ref={root} className="relative bg-cream" style={{ height: `${ITEMS.length * 100}svh` }}>
+      <div className="sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden px-4 sm:px-6">
+        <div className="mx-auto w-full max-w-[1200px]">
+          <h2
+            data-stats-title
+            className="display display-3d text-center text-[clamp(2rem,5vw,3.75rem)] sm:text-left"
+          >
+            <span className="line-mask">
+              <span className="block">
+                {content.stats.title[0]} <span className="text-green">{content.stats.title[1]}</span>
+              </span>
+            </span>
+          </h2>
 
-      <div className="relative mx-auto max-w-[1300px]">
-        <h2
-          data-stats-title
-          className="display mx-auto max-w-[14ch] text-center text-[clamp(2.2rem,6vw,4.5rem)]"
-        >
-          <span className="block overflow-hidden pb-[0.08em]">
-            <span className="block">{line1}</span>
-          </span>
-          <span className="block overflow-hidden pb-[0.08em]">
-            <span className="block text-green">{line2}</span>
-          </span>
-        </h2>
-
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {content.stats.items.map((stat) => (
-            <article
-              key={stat.label}
-              data-stat
-              data-value={stat.value}
-              className={`sticker-lg relative overflow-hidden rounded-[2rem] p-7 will-change-transform ${
-                TONES[stat.color] ?? TONES.green
-              }`}
+          {/* Marge haute généreuse : le chiffre fantôme du dessus vient s'y
+              loger sans mordre le titre. */}
+          <div className="relative mt-20 sm:mt-24">
+            {/* Chiffres voisins en filigrane : on voit d'où l'on vient et où
+                l'on va, comme sur un compteur qui défile. */}
+            <p
+              aria-hidden
+              className="display pointer-events-none absolute -top-14 left-2 text-[clamp(3rem,7vw,5rem)] text-ink/[0.07] select-none sm:-top-20"
             >
-              <Sticker name={stat.icon} size={80} className="absolute -top-3 -right-3 opacity-25" />
+              {previous ? `${previous.prefix}${previous.value}${previous.suffix}` : ""}
+            </p>
+            <p
+              aria-hidden
+              className="display pointer-events-none absolute -bottom-14 left-2 text-[clamp(3rem,7vw,5rem)] text-ink/[0.07] select-none sm:-bottom-20"
+            >
+              {next ? `${next.prefix}${next.value}${next.suffix}` : ""}
+            </p>
 
-              <p className="display text-[clamp(2.75rem,6vw,3.75rem)] tabular-nums">
-                {stat.prefix}
-                <span data-count>{stat.value}</span>
-                {stat.suffix}
-              </p>
+            <div className="grid gap-4 sm:grid-cols-[minmax(0,0.85fr)_minmax(0,2fr)] sm:gap-6">
+              {/* Le carré de couleur porte le chiffre */}
+              <div
+                key={`box-${active}`}
+                className={`sticker-lg flex aspect-square items-center justify-center rounded-[2rem] ${tone.box}`}
+              >
+                <p className={`display text-[clamp(3.25rem,11vw,6rem)] tabular-nums ${tone.number}`}>
+                  {item.prefix}
+                  <span ref={numberRef}>{item.value}</span>
+                  {item.suffix}
+                </p>
+              </div>
 
-              <p className="mt-3 text-lg leading-tight font-bold">{stat.label}</p>
-              <p className="prose-balanced mt-2 text-sm leading-snug font-medium opacity-80">
-                {stat.note}
-              </p>
-            </article>
-          ))}
+              {/* La carte claire l'explique */}
+              <div
+                key={`card-${active}`}
+                className="sticker-lg relative flex flex-col justify-center overflow-hidden rounded-[2rem] bg-cream p-7 sm:p-10"
+              >
+                <Sticker
+                  name={item.icon}
+                  size={140}
+                  className="absolute -right-6 -bottom-6 opacity-10"
+                />
+
+                <p className="display text-[clamp(1.6rem,3.6vw,2.75rem)]">{item.label}</p>
+                <p className="prose-balanced mt-3 max-w-md text-base leading-relaxed font-medium text-ink/70 sm:text-lg">
+                  {item.note}
+                </p>
+
+                {/* Progression : une pastille par statistique */}
+                <div className="mt-7 flex items-center gap-2">
+                  {ITEMS.map((s, i) => (
+                    <span
+                      key={s.label}
+                      aria-hidden
+                      className={`h-2 rounded-full border-2 border-ink transition-all duration-300 ${
+                        i === active ? "w-9 bg-green" : "w-2 bg-cream"
+                      }`}
+                    />
+                  ))}
+                  <span className="sr-only">
+                    Statistique {active + 1} sur {ITEMS.length}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
