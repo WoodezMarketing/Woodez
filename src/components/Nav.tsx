@@ -108,19 +108,19 @@ export default function Nav() {
             </Button>
           </span>
 
-          {/* La bulle du menu : refermée c'est un rond parfait, ouverte elle
-              s'étire vers la gauche et laisse apparaître les liens en ligne.
-              Ce n'est pas un panneau séparé, c'est la même pastille qui
-              s'allonge — d'où la transition sur `max-width` et non sur
-              `width`, qui ne s'anime pas depuis `auto`. */}
+          {/* La bulle du menu. Sur grand écran elle s'étire vers la gauche et
+              les liens apparaissent en ligne ; sur mobile elle reste un rond
+              et le menu se déplie à la verticale en dessous.
+              La transition porte sur `max-width` et non `width`, qui ne
+              s'anime pas depuis `auto`. */}
           <div
             className={`sticker flex h-12 items-center justify-end overflow-hidden rounded-full bg-cream transition-[max-width] duration-500 ${
-              open ? "max-w-[46rem]" : "max-w-12"
+              open ? "max-w-12 lg:max-w-[46rem]" : "max-w-12"
             } ${collapsed ? "lg:flex" : "lg:hidden"}`}
             style={{ transitionTimingFunction: "cubic-bezier(0.34, 1.4, 0.5, 1)" }}
           >
             <nav
-              className={`flex items-center gap-2 pl-5 whitespace-nowrap transition-opacity duration-300 ${
+              className={`hidden items-center gap-2 pl-5 whitespace-nowrap transition-opacity duration-300 lg:flex ${
                 open ? "opacity-100 delay-150" : "pointer-events-none opacity-0"
               }`}
             >
@@ -172,6 +172,37 @@ export default function Nav() {
               </span>
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Menu vertical, mobile uniquement : sur un écran étroit une rangée de
+          liens ne tiendrait pas. Grille 0fr → 1fr pour déplier en douceur sans
+          mesurer la hauteur en JavaScript. */}
+      <div
+        className={`mx-4 grid transition-all duration-400 lg:hidden ${
+          open ? "grid-rows-[1fr] opacity-100" : "pointer-events-none grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <nav className="sticker mt-1 flex flex-col gap-1 rounded-3xl bg-cream p-3">
+            {links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                className="rounded-2xl px-4 py-3 text-center font-semibold transition-colors hover:bg-mint"
+              >
+                {link.label}
+              </a>
+            ))}
+            <a
+              href="#contact"
+              onClick={() => setOpen(false)}
+              className="mt-1 rounded-2xl bg-green px-4 py-3.5 text-center font-bold text-cream"
+            >
+              {content.nav.cta}
+            </a>
+          </nav>
         </div>
       </div>
     </header>
