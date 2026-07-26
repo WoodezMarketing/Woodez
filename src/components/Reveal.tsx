@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { content } from "@/lib/content"
+import { reveal } from "@/lib/anim"
 import { Sticker } from "./ui"
 
 /** Stickers dispersés autour du paragraphe, hors de la zone de lecture. */
@@ -44,15 +45,12 @@ export default function Reveal() {
         },
       })
 
-      gsap.from("[data-around]", {
-        scale: 0,
-        rotate: -40,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.08,
-        ease: "back.out(2.2)",
-        scrollTrigger: { trigger: el, start: "top 65%" },
-      })
+      reveal(
+        "[data-around]",
+        { scale: 0, rotate: -40, opacity: 0 },
+        { scale: 1, rotate: 0, opacity: 1, duration: 0.7, stagger: 0.08, ease: "back.out(2.2)" },
+        { trigger: el, start: "top 70%" },
+      )
 
       gsap.to("[data-around]", {
         y: (i) => (i % 2 ? 18 : -18),
@@ -72,9 +70,11 @@ export default function Reveal() {
     content.reveal.highlight.some((h) => h.split(" ").some((part) => word.includes(part)))
 
   return (
+    // Plein écran : la phrase occupe toute la hauteur et devient un temps
+    // d'arrêt dans le défilement, pas une bande de plus.
     <section
       ref={root}
-      className="relative overflow-hidden bg-mint px-5 py-28 sm:px-8 sm:py-40"
+      className="relative flex min-h-[100svh] items-center overflow-hidden bg-mint px-5 py-24 sm:px-8"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 hidden md:block">
         {AROUND.map((s) => (
@@ -84,7 +84,7 @@ export default function Reveal() {
         ))}
       </div>
 
-      <p className="relative mx-auto max-w-4xl text-center text-[clamp(1.5rem,3.6vw,2.75rem)] leading-[1.35] font-bold">
+      <p className="relative mx-auto max-w-5xl text-center text-[clamp(1.6rem,4vw,3.25rem)] leading-[1.32] font-bold">
         {words.map((word, i) => (
           <span
             key={`${word}-${i}`}

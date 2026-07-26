@@ -24,7 +24,18 @@ export default function SmoothScroll() {
     gsap.ticker.add(raf)
     gsap.ticker.lagSmoothing(0)
 
+    // Les positions de déclenchement sont mesurées au montage, avant que les
+    // images et la police n'aient fini de charger. La hauteur de page change
+    // ensuite, et des sections entières peuvent rester bloquées sur leur état
+    // de départ. On recalcule dès que la mise en page est stabilisée.
+    const refresh = () => ScrollTrigger.refresh()
+    document.fonts.ready.then(refresh)
+    window.addEventListener("load", refresh)
+    const late = window.setTimeout(refresh, 1200)
+
     return () => {
+      window.removeEventListener("load", refresh)
+      window.clearTimeout(late)
       gsap.ticker.remove(raf)
       lenis.destroy()
     }

@@ -4,7 +4,8 @@ import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { content } from "@/lib/content"
-import { Eyebrow, Sticker } from "./ui"
+import { reveal, revealLines } from "@/lib/anim"
+import { Eyebrow } from "./ui"
 
 type Verdict = "oui" | "bof" | "non"
 
@@ -26,30 +27,28 @@ export default function Comparison() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      gsap.from("[data-heading] > span > span", {
-        yPercent: 110,
-        duration: 0.9,
-        stagger: 0.1,
-        ease: "expo.out",
-        scrollTrigger: { trigger: el, start: "top 70%" },
-      })
+      revealLines("[data-heading] > span > span", { trigger: el, start: "top 70%" })
 
-      gsap.from("[data-row]", {
-        x: -32,
-        opacity: 0,
-        duration: 0.45,
-        stagger: 0.08,
-        ease: "power2.out",
-        scrollTrigger: { trigger: "[data-table]", start: "top 80%" },
-      })
+      reveal(
+        "[data-vs]",
+        { scale: 0, rotate: -180 },
+        { scale: 1, rotate: 0, duration: 0.8, ease: "back.out(2.6)", delay: 0.25 },
+        { trigger: el, start: "top 70%" },
+      )
 
-      gsap.from("[data-mark]", {
-        scale: 0,
-        duration: 0.4,
-        stagger: 0.03,
-        ease: "back.out(2.4)",
-        scrollTrigger: { trigger: "[data-table]", start: "top 80%" },
-      })
+      reveal(
+        "[data-row]",
+        { x: -32, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.45, stagger: 0.08, ease: "power2.out" },
+        { trigger: el, start: "top 60%" },
+      )
+
+      reveal(
+        "[data-mark]",
+        { scale: 0 },
+        { scale: 1, duration: 0.4, stagger: 0.03, ease: "back.out(2.4)" },
+        { trigger: el, start: "top 60%" },
+      )
     }, el)
 
     return () => ctx.revert()
@@ -61,29 +60,32 @@ export default function Comparison() {
     <section
       ref={root}
       id="comparaison"
-      className="relative overflow-hidden bg-ink px-4 py-24 sm:px-6 sm:py-32"
+      className="relative overflow-hidden bg-mint px-4 py-24 sm:px-6 sm:py-32"
     >
-      {/* Woodez adossé au bord de la section : le personnage qui revient d'une
-          section à l'autre est ce qui fait tenir la page comme une histoire. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-10 bottom-0 hidden opacity-90 xl:block"
-      >
-        <Sticker name="mascot" size={300} />
-      </div>
-
       <div className="relative mx-auto max-w-[1100px]">
         <div className="mx-auto max-w-2xl text-center">
           <Eyebrow tone="coral">{content.comparison.eyebrow}</Eyebrow>
-          <h2 data-heading className="display mt-6 text-[clamp(2.2rem,6.4vw,4.75rem)] text-cream">
+
+          {/* Le « vs » est une pastille en relief, comme les boutons : il
+              sépare les deux camps au lieu d'être un mot noyé dans le titre. */}
+          <h2
+            data-heading
+            className="display mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[clamp(2.2rem,6.4vw,4.75rem)]"
+          >
             <span className="block overflow-hidden pb-[0.08em]">
               <span className="block text-green">{content.comparison.title[0]}</span>
             </span>
+
+            <span data-vs className="sticker inline-flex rounded-full bg-lemon px-5 py-1 text-[0.42em]">
+              vs
+            </span>
+
             <span className="block overflow-hidden pb-[0.08em]">
               <span className="block">{content.comparison.title[1]}</span>
             </span>
           </h2>
-          <p className="prose-balanced mx-auto mt-6 max-w-lg text-lg leading-relaxed font-medium text-cream/70">
+
+          <p className="prose-balanced mx-auto mt-6 max-w-lg text-lg leading-relaxed font-medium text-ink/75">
             {content.comparison.lead}
           </p>
         </div>
@@ -97,7 +99,7 @@ export default function Comparison() {
                 <div
                   key={col}
                   className={`sticker flex items-center justify-center rounded-2xl px-2 py-3 text-center ${
-                    i === 0 ? "bg-green text-cream" : "bg-cream/85 text-ink/60"
+                    i === 0 ? "bg-green text-cream" : "bg-cream text-ink/60"
                   }`}
                 >
                   <span className="display text-sm leading-tight sm:text-base">{col}</span>
@@ -111,9 +113,9 @@ export default function Comparison() {
                 <div
                   key={row.label}
                   data-row
-                  className="grid grid-cols-[1.4fr_repeat(3,minmax(0,1fr))] items-center gap-2 rounded-2xl bg-cream/10 sm:gap-3"
+                  className="grid grid-cols-[1.4fr_repeat(3,minmax(0,1fr))] items-center gap-2 rounded-2xl bg-cream/60 sm:gap-3"
                 >
-                  <div className="px-3 py-4 text-sm leading-snug font-bold text-cream sm:text-base">
+                  <div className="px-3 py-4 text-sm leading-snug font-bold sm:text-base">
                     {row.label}
                   </div>
 
@@ -141,7 +143,7 @@ export default function Comparison() {
         {/* Légende */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
           {(Object.keys(MARKS) as Verdict[]).map((key) => (
-            <span key={key} className="flex items-center gap-2 text-sm font-semibold text-cream/70">
+            <span key={key} className="flex items-center gap-2 text-sm font-semibold text-ink/70">
               <span
                 className={`flex size-7 items-center justify-center rounded-full border-[3px] border-ink text-sm ${MARKS[key].className}`}
                 aria-hidden

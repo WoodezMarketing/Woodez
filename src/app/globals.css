@@ -42,6 +42,8 @@
     background: var(--color-cream);
     color: var(--color-ink);
     font-family: var(--font-sans);
+    /* Inter respire large par défaut ; on resserre légèrement le texte courant. */
+    letter-spacing: -0.011em;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }

@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { content } from "@/lib/content"
+import { reveal, revealLines } from "@/lib/anim"
 import { Sticker } from "./ui"
 
 const TONES: Record<string, string> = {
@@ -31,35 +32,38 @@ export default function Stats() {
     if (reduced) return
 
     const ctx = gsap.context(() => {
-      gsap.from("[data-stats-title] > span", {
-        yPercent: 110,
-        duration: 0.9,
-        stagger: 0.1,
-        ease: "expo.out",
-        scrollTrigger: { trigger: el, start: "top 75%" },
-      })
+      revealLines("[data-stats-title] > span > span", { trigger: el, start: "top 75%" })
 
       gsap.utils.toArray<HTMLElement>("[data-stat]").forEach((card, i) => {
         const number = card.querySelector<HTMLElement>("[data-count]")
         const target = Number(card.dataset.value)
+        const tilt = i % 2 ? 9 : -9
 
-        // Entrée : la carte monte, se redresse et rebondit.
-        gsap.from(card, {
-          yPercent: 45,
-          rotate: i % 2 ? 7 : -7,
-          scale: 0.85,
-          opacity: 0,
-          duration: 0.8,
-          ease: "back.out(1.6)",
-          scrollTrigger: { trigger: card, start: "top 88%" },
-        })
+        // Entrée : la carte surgit du bas, franchement de travers, puis se
+        // redresse en rebondissant. Le décalage se fait carte par carte.
+        reveal(
+          card,
+          { yPercent: 110, rotate: tilt * 1.6, scale: 0.8, opacity: 0 },
+          {
+            yPercent: 0,
+            rotate: 0,
+            scale: 1,
+            opacity: 1,
+            duration: 1,
+            ease: "back.out(1.7)",
+            delay: i * 0.12,
+          },
+          { trigger: el, start: "top 78%" },
+        )
 
-        // Dérive continue pendant la traversée : chaque carte à sa vitesse.
+        // Dérive continue pendant la traversée : chaque carte monte à sa
+        // vitesse et garde une légère inclinaison, ce qui creuse la profondeur.
         gsap.fromTo(
           card,
-          { y: 40 + i * 14 },
+          { y: 120 + i * 55, rotate: tilt },
           {
-            y: -40 - i * 14,
+            y: -120 - i * 55,
+            rotate: -tilt,
             ease: "none",
             scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: 1 },
           },
@@ -93,7 +97,9 @@ export default function Stats() {
   const [line1, line2] = content.stats.title
 
   return (
-    <section ref={root} className="relative overflow-hidden bg-cream px-4 py-24 sm:px-6 sm:py-32">
+    // Rembourrage large : les cartes voyagent beaucoup verticalement, il leur
+    // faut de la marge pour ne pas mordre les sections voisines.
+    <section ref={root} className="relative overflow-hidden bg-cream px-4 py-32 sm:px-6 sm:py-44">
       {/* Stickers de marque en très grand, presque effacés : ils donnent de la
           matière au fond sans jamais concurrencer les chiffres. */}
       <div data-stat-bg aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.05]">
@@ -127,15 +133,11 @@ export default function Stats() {
               key={stat.label}
               data-stat
               data-value={stat.value}
-              className={`sticker-lg relative flex min-h-[16rem] flex-col justify-between overflow-hidden rounded-[2rem] p-7 ${
+              className={`sticker-lg relative overflow-hidden rounded-[2rem] p-7 will-change-transform ${
                 TONES[stat.color] ?? TONES.green
               }`}
             >
-              <Sticker
-                name={stat.icon}
-                size={90}
-                className="absolute -right-3 -top-3 opacity-25"
-              />
+              <Sticker name={stat.icon} size={80} className="absolute -top-3 -right-3 opacity-25" />
 
               <p className="display text-[clamp(2.75rem,6vw,3.75rem)] tabular-nums">
                 {stat.prefix}
@@ -143,12 +145,10 @@ export default function Stats() {
                 {stat.suffix}
               </p>
 
-              <div>
-                <p className="text-lg leading-tight font-bold">{stat.label}</p>
-                <p className="prose-balanced mt-2 text-sm leading-snug font-medium opacity-80">
-                  {stat.note}
-                </p>
-              </div>
+              <p className="mt-3 text-lg leading-tight font-bold">{stat.label}</p>
+              <p className="prose-balanced mt-2 text-sm leading-snug font-medium opacity-80">
+                {stat.note}
+              </p>
             </article>
           ))}
         </div>

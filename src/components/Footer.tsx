@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { CONTACT, content } from "@/lib/content"
+import { reveal } from "@/lib/anim"
 import { Sticker } from "./ui"
 
 /** Stickers posés sur le grand mot du bas, comme des autocollants collés dessus. */
@@ -32,40 +33,38 @@ export default function Footer() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      gsap.from("[data-stuck]", {
-        scale: 0,
-        rotate: -50,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.09,
-        ease: "back.out(2.4)",
-        scrollTrigger: { trigger: "[data-wordmark]", start: "top 92%" },
-      })
+      reveal(
+        "[data-stuck]",
+        { scale: 0, rotate: -50, opacity: 0 },
+        { scale: 1, rotate: 0, opacity: 1, duration: 0.7, stagger: 0.09, ease: "back.out(2.4)" },
+        { trigger: el, start: "top 80%" },
+      )
 
-      gsap.from("[data-wordmark-text]", {
-        yPercent: 30,
-        opacity: 0,
-        duration: 1,
-        ease: "expo.out",
-        scrollTrigger: { trigger: "[data-wordmark]", start: "top 95%" },
-      })
+      reveal(
+        "[data-wordmark-text]",
+        { yPercent: 30, opacity: 0 },
+        { yPercent: 0, opacity: 1, duration: 1, ease: "expo.out" },
+        { trigger: el, start: "top 85%" },
+      )
     }, el)
 
     return () => ctx.revert()
   }, [])
 
   return (
-    <footer ref={root} className="bg-cream px-4 pt-6 pb-6 sm:px-6">
-      {/* Un grand bloc arrondi, comme une carte posée sur la page */}
-      <div className="mx-auto max-w-[1400px] overflow-hidden rounded-[2.5rem] border-4 border-ink bg-green">
+    // Le vert continue derrière : le bloc blanc a l'air posé sur la section
+    // précédente plutôt que d'ouvrir une nouvelle bande.
+    <footer ref={root} className="bg-green p-4 sm:p-6">
+      {/* Pleine largeur, mais avec sa marge tout autour : la carte flotte. */}
+      <div className="overflow-hidden rounded-[2.5rem] border-4 border-ink bg-cream">
         <div className="grid gap-10 p-8 sm:p-12 lg:grid-cols-3 lg:gap-8">
           <div>
-            <span className="sticker inline-block rounded-full bg-cream px-3 py-1 text-xs font-bold tracking-[0.12em] uppercase">
+            <span className="sticker inline-block rounded-full bg-green px-3 py-1 text-xs font-bold tracking-[0.12em] text-cream uppercase">
               Écris-nous
             </span>
             <a
               href={`mailto:${CONTACT.email}`}
-              className="display mt-4 block text-[clamp(1.5rem,3vw,2.25rem)] text-cream transition-colors hover:text-ink"
+              className="display mt-4 block text-[clamp(1.5rem,3vw,2.25rem)] transition-colors hover:text-green"
             >
               {CONTACT.email}
             </a>
@@ -73,27 +72,27 @@ export default function Footer() {
               href={CONTACT.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-2 inline-block text-lg font-bold text-cream/85 underline decoration-2 underline-offset-4 transition-colors hover:text-ink"
+              className="mt-2 inline-block text-lg font-bold text-ink/70 underline decoration-2 underline-offset-4 transition-colors hover:text-green"
             >
               ou écris-nous sur WhatsApp
             </a>
           </div>
 
           <div>
-            <span className="sticker inline-block rounded-full bg-cream px-3 py-1 text-xs font-bold tracking-[0.12em] uppercase">
+            <span className="sticker inline-block rounded-full bg-green px-3 py-1 text-xs font-bold tracking-[0.12em] text-cream uppercase">
               Au téléphone
             </span>
             <a
               href={CONTACT.phoneHref}
-              className="display mt-4 block text-[clamp(1.5rem,3vw,2.25rem)] text-cream transition-colors hover:text-ink"
+              className="display mt-4 block text-[clamp(1.5rem,3vw,2.25rem)] transition-colors hover:text-green"
             >
               {CONTACT.phone}
             </a>
-            <p className="mt-2 text-sm font-semibold text-cream/70">{content.footer.madeIn} 🍁</p>
+            <p className="mt-2 text-sm font-semibold text-ink/60">{content.footer.madeIn} 🍁</p>
           </div>
 
           <div>
-            <span className="sticker inline-block rounded-full bg-cream px-3 py-1 text-xs font-bold tracking-[0.12em] uppercase">
+            <span className="sticker inline-block rounded-full bg-green px-3 py-1 text-xs font-bold tracking-[0.12em] text-cream uppercase">
               Nous suivre
             </span>
             <ul className="mt-4 flex flex-wrap gap-2">
@@ -103,14 +102,14 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="sticker inline-block rounded-full bg-cream px-4 py-2 text-sm font-bold transition-transform duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-none"
+                    className="sticker inline-block rounded-full bg-mint px-4 py-2 text-sm font-bold transition-transform duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-none"
                   >
                     {social.label}
                   </a>
                 </li>
               ))}
             </ul>
-            <p className="prose-balanced mt-5 max-w-xs text-sm leading-snug font-medium text-cream/70">
+            <p className="prose-balanced mt-5 max-w-xs text-sm leading-snug font-medium text-ink/60">
               {content.footer.tagline}
             </p>
           </div>
@@ -121,7 +120,7 @@ export default function Footer() {
           <p
             data-wordmark-text
             aria-hidden
-            className="display w-full text-center text-[clamp(4rem,21vw,17rem)] leading-[0.8] text-cream select-none"
+            className="display w-full text-center text-[clamp(4rem,21vw,17rem)] leading-[0.8] text-green select-none"
           >
             Woodez
           </p>
@@ -135,7 +134,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-between gap-2 border-t-4 border-ink/15 px-8 py-5 text-sm font-semibold text-cream/70 sm:flex-row sm:px-12">
+        <div className="flex flex-col items-center justify-between gap-2 border-t-4 border-ink/10 px-8 py-5 text-sm font-semibold text-ink/55 sm:flex-row sm:px-12">
           <p>
             © {new Date().getFullYear()} Woodez. {content.footer.rights}
           </p>

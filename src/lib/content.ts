@@ -23,9 +23,10 @@ export const content = {
   // Les trois lignes se révèlent l'une après l'autre — c'est le parcours client
   // raconté en trois temps.
   hero: {
-    // Découpé en lignes courtes : le titre reste étroit et centré au lieu de
-    // s'étaler sur toute la largeur de l'écran.
-    title: ["Fais revenir", "tes clients.", "Encore et encore."],
+    // Deux lignes sur grand écran, pour que le bloc de texte reste haut et ne
+    // vienne pas se poser sur la tête de Woodez. Sur mobile chaque ligne se
+    // replie naturellement, ce qui en donne quatre.
+    title: ["Fais revenir tes clients.", "Encore et encore."],
     kicker:
       "Le email et SMS marketing conçu pour fidéliser, automatiser et faire grandir ton commerce.",
     cta: "Commencer maintenant",
@@ -137,7 +138,7 @@ export const content = {
 
   comparison: {
     eyebrow: "Pourquoi nous",
-    title: ["Woodez", "vs le reste"],
+    title: ["Woodez", "le reste"],
     lead: "Pas de prix fixe : on bâtit une offre à votre taille. Voici ce qui ne change jamais.",
     columns: ["Woodez", "Agence classique", "À l'interne"],
     /** oui | bof | non — se lit d'un coup d'œil, sans rien avoir à lire. */
@@ -187,7 +188,6 @@ export const content = {
     title: ["Prêt à faire", "parler", "votre marque ?"],
     lead: "Dites-nous où vous en êtes. On revient avec un plan concret.",
     button: "Commencer maintenant",
-    or: "ou écrivez-nous directement",
   },
 
   footer: {

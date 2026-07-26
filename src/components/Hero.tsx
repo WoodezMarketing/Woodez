@@ -72,7 +72,7 @@ export default function Hero() {
       >
         {/* Titre en encre : le vert de marque disparaîtrait sur le coup de
             pinceau vert de la scène juste derrière. */}
-        <h1 className="display max-w-full text-[clamp(2.4rem,5.6vw,4.4rem)] text-ink">
+        <h1 className="display max-w-[14ch] text-[clamp(2.4rem,5.2vw,4.2rem)] text-ink sm:max-w-none">
           {content.hero.title.map((line) => (
             <span key={line} data-line className="block overflow-hidden pb-[0.08em]">
               <span className="block">{line}</span>

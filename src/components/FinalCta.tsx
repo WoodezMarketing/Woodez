@@ -6,7 +6,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { CONTACT, content } from "@/lib/content"
 import { Button, Sticker } from "./ui"
 
-// Sur fond jaune, les stickers vert + contour noir ressortent au maximum.
 const CONFETTI = [
   { name: "heart", size: 64, className: "left-[7%] top-[16%]" },
   { name: "paper-plane", size: 68, className: "right-[8%] top-[14%]" },
@@ -55,7 +54,7 @@ export default function FinalCta() {
     <section
       ref={root}
       id="contact"
-      className="relative isolate overflow-hidden bg-lemon px-4 py-24 sm:px-6 sm:py-32"
+      className="relative isolate overflow-hidden bg-green px-4 py-24 sm:px-6 sm:py-32"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 hidden md:block">
         {CONFETTI.map((c) => (
@@ -66,35 +65,24 @@ export default function FinalCta() {
       </div>
 
       <div className="mx-auto max-w-3xl text-center">
-        <h2 className="display text-[clamp(2.2rem,6.4vw,5rem)]">
+        <h2 className="display text-[clamp(2.2rem,6.4vw,5rem)] text-cream">
           {content.cta.title[0]}{" "}
-          <span className="text-green">{content.cta.title[1]}</span>{" "}
+          <span className="text-ink">{content.cta.title[1]}</span>{" "}
           {content.cta.title[2]}
         </h2>
 
-        <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed font-medium text-ink/75">
+        <p className="prose-balanced mx-auto mt-6 max-w-lg text-lg leading-relaxed font-medium text-cream/85">
           {content.cta.lead}
         </p>
 
         <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <Button href={`mailto:${CONTACT.email}`} tone="green" className="text-lg">
+          <Button href={`mailto:${CONTACT.email}`} tone="cream" className="text-lg">
             {content.cta.button}
           </Button>
-          <Button href={CONTACT.whatsapp} tone="cream" target="_blank" rel="noopener noreferrer">
+          <Button href={CONTACT.whatsapp} tone="lemon" target="_blank" rel="noopener noreferrer">
             WhatsApp
           </Button>
         </div>
-
-        <p className="mt-8 text-sm font-semibold text-ink/70">
-          {content.cta.or}{" "}
-          <a href={`mailto:${CONTACT.email}`} className="underline decoration-2 underline-offset-4 hover:text-green">
-            {CONTACT.email}
-          </a>{" "}
-          ·{" "}
-          <a href={CONTACT.phoneHref} className="underline decoration-2 underline-offset-4 hover:text-green">
-            {CONTACT.phone}
-          </a>
-        </p>
       </div>
     </section>
   )

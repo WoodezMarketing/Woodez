@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { content } from "@/lib/content"
+import { reveal, revealLines } from "@/lib/anim"
 import { Eyebrow, Sticker } from "./ui"
 
 /** Un sticker différent par question : il apparaît quand la réponse s'ouvre. */
@@ -21,22 +22,14 @@ export default function Faq() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      gsap.from("[data-faq-heading] > span > span", {
-        yPercent: 110,
-        duration: 0.9,
-        stagger: 0.1,
-        ease: "expo.out",
-        scrollTrigger: { trigger: el, start: "top 72%" },
-      })
+      revealLines("[data-faq-heading] > span > span", { trigger: el, start: "top 72%" })
 
-      gsap.from("[data-faq-item]", {
-        y: 30,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.07,
-        ease: "back.out(1.5)",
-        scrollTrigger: { trigger: "[data-faq-list]", start: "top 82%" },
-      })
+      reveal(
+        "[data-faq-item]",
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, stagger: 0.07, ease: "back.out(1.5)" },
+        { trigger: el, start: "top 65%" },
+      )
     }, el)
 
     return () => ctx.revert()
