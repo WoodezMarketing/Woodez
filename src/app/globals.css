@@ -54,6 +54,15 @@
   }
 }
 
+/* Déclarée en tant que propriété typée pour que le navigateur sache
+   l'interpoler : une variable CSS ordinaire sauterait d'une valeur à l'autre
+   au lieu de balayer. */
+@property --wipe {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+
 @layer components {
   /* Gyoza est toujours en Black + majuscules. L'interligne doit rester assez
      large pour que les accents (É, À, Ç) ne mordent pas la ligne du dessus. */
@@ -78,6 +87,23 @@
     -webkit-text-stroke: 0.085em var(--color-ink);
     paint-order: stroke fill;
     text-shadow: 0.1em 0.1em 0 var(--color-ink);
+  }
+
+  /* Balayage de couleur : le texte est rempli par un dégradé à deux couleurs
+     à bascule franche, découpé sur les lettres. Déplacer la position du fond
+     fait glisser la frontière d'un bord à l'autre du mot, ce qui le fait
+     passer du vert à l'encre sans jamais toucher à l'opacité. */
+  .wipe {
+    background-image: linear-gradient(
+      to right,
+      var(--color-ink) 50%,
+      var(--color-green) 50%
+    );
+    background-size: 200% 100%;
+    background-position-x: var(--wipe);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   /* Masque de révélation ligne par ligne. Le rembourrage laisse passer les

@@ -26,22 +26,26 @@ export default function Reveal() {
 
     gsap.registerPlugin(ScrollTrigger)
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      gsap.set("[data-word]", { opacity: 1 })
+      gsap.set("[data-word]", { "--wipe": "0%" })
       return
     }
 
     const ctx = gsap.context(() => {
-      // Les mots s'allument un à un, calés sur la position de défilement :
-      // le lecteur « écrit » la phrase en descendant.
+      // Chaque mot est balayé de gauche à droite, l'un après l'autre, au
+      // rythme du défilement : la phrase se colore comme on la lirait.
+      // Durée plus longue que le décalage : deux ou trois mots sont toujours
+      // en cours de balayage, ce qui donne un bord souple plutôt qu'un mot qui
+      // bascule d'un coup.
       gsap.to("[data-word]", {
-        opacity: 1,
+        "--wipe": "0%",
         ease: "none",
+        duration: 2.5,
         stagger: 1,
         scrollTrigger: {
           trigger: el,
-          start: "top 70%",
-          end: "bottom 75%",
-          scrub: 0.6,
+          start: "top 75%",
+          end: "bottom 80%",
+          scrub: 0.5,
         },
       })
 
@@ -66,8 +70,6 @@ export default function Reveal() {
   }, [])
 
   const words = content.reveal.text.split(" ")
-  const isHighlighted = (word: string) =>
-    content.reveal.highlight.some((h) => h.split(" ").some((part) => word.includes(part)))
 
   return (
     // Plein écran : la phrase occupe toute la hauteur et devient un temps
@@ -84,13 +86,9 @@ export default function Reveal() {
         ))}
       </div>
 
-      <p className="prose-balanced relative mx-auto max-w-5xl text-center text-[clamp(2.1rem,4vw,3.25rem)] leading-[1.28] font-bold">
+      <p className="display relative mx-auto max-w-5xl text-center text-[clamp(1.65rem,3.6vw,3rem)] leading-[1.18]">
         {words.map((word, i) => (
-          <span
-            key={`${word}-${i}`}
-            data-word
-            className={`opacity-15 transition-none ${isHighlighted(word) ? "text-green" : "text-ink"}`}
-          >
+          <span key={`${word}-${i}`} data-word className="wipe">
             {word}
             {i < words.length - 1 ? " " : ""}
           </span>
