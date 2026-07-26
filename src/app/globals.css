@@ -82,11 +82,20 @@
   /* Titres au même relief que les boutons : contour noir, remplissage clair,
      ombre portée dure. `paint-order` place le contour derrière le
      remplissage, sinon il ronge l'intérieur des lettres. */
+  /* L'ombre est empilée en petits pas plutôt qu'en un seul décalage : avec un
+     décalage unique plus large que le contour, un liseré de fond apparaissait
+     entre la lettre et son ombre, très visible aux petites tailles. */
   .display-3d {
     color: var(--color-cream);
     -webkit-text-stroke: 0.085em var(--color-ink);
     paint-order: stroke fill;
-    text-shadow: 0.1em 0.1em 0 var(--color-ink);
+    text-shadow:
+      0.02em 0.02em 0 var(--color-ink),
+      0.04em 0.04em 0 var(--color-ink),
+      0.06em 0.06em 0 var(--color-ink),
+      0.08em 0.08em 0 var(--color-ink),
+      0.1em 0.1em 0 var(--color-ink),
+      0.12em 0.12em 0 var(--color-ink);
   }
 
   /* Balayage de couleur : le texte est rempli par un dégradé à deux couleurs

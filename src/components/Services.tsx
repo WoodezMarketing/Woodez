@@ -82,7 +82,7 @@ export default function Services() {
                       {service.bullets.map((bullet) => (
                         <li key={bullet} className="flex items-start gap-2.5 font-semibold">
                           <span
-                            className={`mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full text-xs ${tone.chip}`}
+                            className={`sticker mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full text-xs ${tone.chip}`}
                             aria-hidden
                           >
                             ✓

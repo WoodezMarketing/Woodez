@@ -78,10 +78,13 @@ export default function Comparison() {
             </span>
 
             {/* Taille fixe plutôt que relative au titre : en `em` la pastille
-                devenait un point minuscule et le mot dedans, une tache. */}
+                devenait un point minuscule et le mot dedans, une tache. Elle
+                est légèrement remontée : les majuscules du titre n'ont pas de
+                jambage, leur milieu optique est plus haut que le milieu de la
+                ligne. */}
             <span
               data-vs
-              className="sticker flex size-12 shrink-0 items-center justify-center rounded-full bg-ink text-base text-cream sm:size-16 sm:text-xl"
+              className="sticker -mt-[0.12em] flex size-12 shrink-0 items-center justify-center rounded-full bg-cream text-base text-ink sm:size-16 sm:text-xl"
               style={{ WebkitTextStroke: "0", textShadow: "none" }}
             >
               VS

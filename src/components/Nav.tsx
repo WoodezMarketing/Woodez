@@ -67,7 +67,7 @@ export default function Nav() {
 
   return (
     <header ref={root} className="fixed inset-x-0 top-0 z-50">
-      <div className="mx-auto flex max-w-[1400px] items-start justify-between gap-4 px-4 py-4 sm:px-6">
+      <div className="relative mx-auto flex max-w-[1400px] items-start justify-between gap-4 px-4 py-4 sm:px-6">
         <a
           href="#top"
           aria-label="Woodez, retour en haut"
@@ -84,9 +84,11 @@ export default function Nav() {
           />
         </a>
 
+        {/* Centrée sur la page et non entre le logo et le bouton : ces deux-là
+            n'ont pas la même largeur, la barre paraissait décalée. */}
         <nav
           data-nav-part
-          className="sticker hidden items-center gap-1 rounded-full bg-cream px-2 py-2 lg:flex"
+          className="sticker absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-full bg-cream px-2 py-2 lg:flex"
         >
           {links.map((link) => (
             <a
@@ -113,12 +115,12 @@ export default function Nav() {
               `width`, qui ne s'anime pas depuis `auto`. */}
           <div
             className={`sticker flex h-12 items-center justify-end overflow-hidden rounded-full bg-cream transition-[max-width] duration-500 ${
-              open ? "max-w-[42rem]" : "max-w-12"
+              open ? "max-w-[46rem]" : "max-w-12"
             } ${collapsed ? "lg:flex" : "lg:hidden"}`}
             style={{ transitionTimingFunction: "cubic-bezier(0.34, 1.4, 0.5, 1)" }}
           >
             <nav
-              className={`flex items-center gap-1 pl-3 whitespace-nowrap transition-opacity duration-300 ${
+              className={`flex items-center gap-2 pl-5 whitespace-nowrap transition-opacity duration-300 ${
                 open ? "opacity-100 delay-150" : "pointer-events-none opacity-0"
               }`}
             >
@@ -127,7 +129,7 @@ export default function Nav() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-full px-3 py-2 text-sm font-semibold transition-colors hover:bg-mint"
+                  className="rounded-full px-3.5 py-2 text-sm font-semibold transition-colors hover:bg-mint"
                 >
                   {link.label}
                 </a>
@@ -135,18 +137,21 @@ export default function Nav() {
               <a
                 href="#contact"
                 onClick={() => setOpen(false)}
-                className="ml-1 rounded-full bg-green px-4 py-2 text-sm font-bold text-cream"
+                className="ml-1 rounded-full bg-green px-4 py-2.5 text-sm font-bold text-cream"
               >
                 {content.nav.cta}
               </a>
             </nav>
 
+            {/* `w-12` fixe plutôt que `size-12` : dans un conteneur en
+                `justify-end`, le bouton doit occuper exactement la largeur de
+                la bulle fermée, sinon l'icône se décale vers la droite. */}
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
-              className="flex size-12 shrink-0 items-center justify-center"
+              className="flex h-12 w-12 shrink-0 items-center justify-center"
             >
               <span className="relative block h-4 w-5">
                 <span

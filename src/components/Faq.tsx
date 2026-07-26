@@ -38,9 +38,14 @@ export default function Faq() {
   return (
     <section ref={root} id="faq" className="bg-cream px-4 py-24 sm:px-6 sm:py-32">
       <div className="mx-auto grid max-w-[1200px] gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
-        <div className="lg:sticky lg:top-32 lg:self-start">
+        <div className="text-center lg:sticky lg:top-32 lg:self-start lg:text-left">
           <Eyebrow tone="lemon">{content.faq.eyebrow}</Eyebrow>
-          <h2 data-faq-heading className="display display-3d mt-6 text-[clamp(2.9rem,6vw,4.5rem)]">
+          {/* `pr` : l'ombre portée du relief déborde à droite et se faisait
+              rogner par le masque de révélation, coupant le « O ». */}
+          <h2
+            data-faq-heading
+            className="display display-3d mt-6 pr-[0.14em] text-[clamp(2.9rem,6vw,4.5rem)]"
+          >
             <span className="line-mask">
               <span className="block">{content.faq.title[0]}</span>
             </span>
@@ -50,7 +55,7 @@ export default function Faq() {
           </h2>
 
           {/* Le sticker change selon la question ouverte. */}
-          <div className="relative mt-10 hidden h-32 lg:block">
+          <div className="relative mt-10 hidden h-32 lg:block" aria-hidden>
             {ICONS.map((icon, i) => (
               <div
                 key={icon}

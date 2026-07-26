@@ -40,7 +40,10 @@ export default function Hero() {
     <section
       ref={root}
       id="top"
-      className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-scene-sky"
+      // `100vh` et non `100svh` sur mobile : la hauteur inclut la barre du
+      // navigateur, la scène descend d'autant et le bouton ne se pose plus
+      // dessus. Le bandeau défilant reste hors champ à l'arrivée.
+      className="relative isolate flex h-screen min-h-[100svh] flex-col overflow-hidden bg-scene-sky sm:h-auto"
     >
       {/* Ciel : deux bandes de nuages à des vitesses différentes, en mouvement
           dès le chargement. C'est le seul élément animé sans interaction. */}
@@ -71,11 +74,11 @@ export default function Hero() {
 
       <div
         data-copy
-        className="relative z-20 flex w-full flex-1 flex-col items-center px-5 pt-24 text-center sm:px-8 sm:pt-28"
+        className="relative z-20 flex w-full flex-1 flex-col items-center px-3 pt-24 text-center sm:px-8 sm:pt-28"
       >
         {/* Deux découpes distinctes : le repli automatique ne tombe pas au bon
             endroit sur petit écran, on impose donc les lignes. */}
-        <h1 className="display display-3d text-[clamp(3.05rem,5.2vw,4.2rem)]">
+        <h1 className="display display-3d text-[clamp(2.5rem,5.2vw,4.2rem)]">
           <span className="block sm:hidden">
             {content.hero.titleMobile.map((line) => (
               <span key={line} data-line className="line-mask">
