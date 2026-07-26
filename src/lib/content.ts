@@ -50,7 +50,7 @@ export const content = {
         title: "Email marketing",
         color: "green",
         icon: "enveloppe",
-        text: "On construit vos automatisations de A à Z dans Klaviyo : bienvenue, panier abandonné, post-achat, réactivation. Puis on garde la machine bien huilée avec des campagnes qui donnent envie d'ouvrir.",
+        text: "Vos automatisations Klaviyo de A à Z, puis des campagnes qui donnent envie d'ouvrir.",
         bullets: [
           "Stratégie et plan de flows complet",
           "Campagnes mensuelles et calendrier",
@@ -63,7 +63,7 @@ export const content = {
         title: "SMS marketing",
         color: "sky",
         icon: "chat",
-        text: "Le canal le plus direct qui existe — à condition de ne pas en abuser. On l'utilise aux bons moments, avec le bon ton, pour que vos abonnés soient contents de vous lire.",
+        text: "Le canal le plus direct qui existe. Au bon moment, avec le bon ton, sans jamais spammer.",
         bullets: [
           "Collecte de numéros et opt-in conforme",
           "Campagnes et automatisations SMS",
@@ -76,7 +76,7 @@ export const content = {
         title: "Design & créatif",
         color: "coral",
         icon: "target",
-        text: "C'est ici qu'on se démarque vraiment. Chaque courriel est designé sur mesure, aux couleurs de votre marque, pour qu'on le reconnaisse avant même de lire l'expéditeur.",
+        text: "Chaque courriel dessiné sur mesure, pour qu'on reconnaisse votre marque avant même l'expéditeur.",
         bullets: [
           "Direction artistique complète",
           "Design d'emails 100 % sur mesure",
@@ -90,13 +90,13 @@ export const content = {
   creations: {
     eyebrow: "Nos créations",
     title: ["Des emails", "qu'on a envie", "d'ouvrir"],
-    lead: "Un aperçu de ce qu'on livre. Chaque marque a son univers — on le respecte et on le pousse plus loin.",
+    lead: "Chaque marque a son univers. On le respecte, puis on le pousse plus loin.",
   },
 
   comparison: {
     eyebrow: "Pourquoi nous",
     title: ["Woodez", "vs le reste"],
-    lead: "Il n'y a pas de prix fixe : une marque qui démarre n'a pas les mêmes besoins qu'une marque à sept chiffres. On bâtit une offre à votre taille — mais voici ce qui ne change jamais.",
+    lead: "Pas de prix fixe : on bâtit une offre à votre taille. Voici ce qui ne change jamais.",
     columns: ["Woodez", "Agence classique", "À l'interne"],
     /** oui | bof | non — se lit d'un coup d'œil, sans rien avoir à lire. */
     rows: [
@@ -116,7 +116,7 @@ export const content = {
     items: [
       {
         q: "Combien ça coûte ?",
-        a: "Ça dépend de votre taille et de vos besoins. Une marque qui démarre n'a pas besoin du même service qu'une marque qui fait des centaines de milliers de dollars. On regarde votre situation, puis on vous propose une offre à votre mesure — sans forfait imposé.",
+        a: "Ça dépend de votre taille et de vos besoins. Une marque qui démarre n'a pas besoin du même service qu'une marque qui fait des centaines de milliers de dollars. On regarde votre situation, puis on vous propose une offre à votre mesure, sans forfait imposé.",
       },
       {
         q: "Vous travaillez avec quelle plateforme ?",
@@ -128,11 +128,11 @@ export const content = {
       },
       {
         q: "Est-ce qu'il y a un contrat à long terme ?",
-        a: "Non. On travaille mois par mois. Si on fait bien notre travail, vous restez — c'est notre seul argument de rétention.",
+        a: "Non. On travaille mois par mois. Si on fait bien notre travail, vous restez, c'est notre seul argument de rétention.",
       },
       {
         q: "Est-ce que vous utilisez l'intelligence artificielle ?",
-        a: "Oui, mais pas pour remplacer le travail créatif. On l'utilise pour accélérer l'analyse, la segmentation et les tests. Le design, la stratégie et le ton de votre marque restent faits par des humains — c'est exactement ce qui fait qu'on ne ressemble pas à tout le monde.",
+        a: "Oui, mais pas pour remplacer le travail créatif. On l'utilise pour accélérer l'analyse, la segmentation et les tests. Le design, la stratégie et le ton de votre marque restent faits par des humains, c'est exactement ce qui fait qu'on ne ressemble pas à tout le monde.",
       },
       {
         q: "Est-ce que je dois déjà avoir une liste d'abonnés ?",
@@ -143,7 +143,7 @@ export const content = {
 
   cta: {
     title: ["Prêt à faire", "parler", "votre marque ?"],
-    lead: "Dites-nous où vous en êtes. On vous revient avec un plan concret — sans obligation, sans langue de bois.",
+    lead: "Dites-nous où vous en êtes. On revient avec un plan concret.",
     button: "Commencer maintenant",
     or: "ou écrivez-nous directement",
   },

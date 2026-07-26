@@ -46,30 +46,28 @@ export default function Hero() {
           dès le chargement. C'est le seul élément animé sans interaction. */}
       <div data-sky aria-hidden className="absolute inset-0 z-0">
         <Clouds
-          src="/hero/clouds-b.png"
-          width={260}
+          src="/hero/clouds-b-v2.png"
+          width={280}
           duration={150}
-          opacity={0.55}
-          className="inset-x-0 top-[6%] h-[42%] sm:top-[4%]"
+          opacity={0.5}
+          className="inset-x-0 top-[2%]"
         />
         <Clouds
-          src="/hero/clouds-a.png"
-          width={190}
+          src="/hero/clouds-a-v2.png"
+          width={200}
           duration={95}
-          className="inset-x-0 top-[14%] h-[46%] sm:top-[10%]"
+          opacity={0.85}
+          className="inset-x-0 top-[8%]"
         />
       </div>
 
-      {/* Centré sur mobile ; sur grand écran le bloc se range à gauche, là où
-          le ciel est dégagé — sinon il se cogne au chien et au coup de pinceau
-          qui occupent le centre. */}
       <div
         data-copy
-        className="relative z-20 flex w-full flex-1 flex-col items-center px-5 pt-24 text-center sm:px-8 sm:pt-28 lg:mx-auto lg:max-w-[1400px] lg:items-start lg:px-12 lg:text-left xl:px-16"
+        className="relative z-20 flex w-full flex-1 flex-col items-center px-5 pt-24 text-center sm:px-8 sm:pt-28"
       >
         {/* Titre en encre : le vert de marque disparaîtrait sur le coup de
             pinceau vert de la scène juste derrière. */}
-        <h1 className="display max-w-full text-[clamp(2rem,4.6vw,3.6rem)] text-ink lg:max-w-[13ch]">
+        <h1 className="display max-w-full text-[clamp(2rem,5vw,4rem)] text-ink">
           {content.hero.title.map((line) => (
             <span key={line} data-line className="block overflow-hidden pb-[0.06em]">
               <span className="block">{line}</span>
@@ -79,7 +77,7 @@ export default function Hero() {
 
         <p
           data-fade
-          className="mt-5 max-w-md text-base leading-snug font-semibold text-ink/70 sm:text-lg"
+          className="mt-5 max-w-md text-base leading-snug font-bold text-ink sm:text-lg"
         >
           {content.hero.kicker}
         </p>
@@ -98,7 +96,7 @@ export default function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex translate-y-[6%] justify-center"
       >
         <Image
-          src="/hero/scene.png"
+          src="/hero/scene-v2.png"
           alt="Woodez et sa bande : une enveloppe emportée par un avion de papier, une boîte aux lettres renversée et un téléphone curieux"
           width={3840}
           height={1629}

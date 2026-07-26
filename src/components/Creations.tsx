@@ -5,24 +5,22 @@ import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { content } from "@/lib/content"
-import { creations, type Creation } from "@/lib/creations"
-import { Eyebrow, Sticker } from "./ui"
+import { creations } from "@/lib/creations"
+import { Eyebrow } from "./ui"
 
-const TONES: Record<Creation["tone"], string> = {
-  green: "bg-green",
-  lemon: "bg-lemon",
-  coral: "bg-coral",
-  violet: "bg-violet",
-  sky: "bg-sky",
-  bubble: "bg-bubble",
-  mint: "bg-mint",
+/** Quatre colonnes, chacune à sa vitesse : la plus lente donne l'arrière-plan. */
+const COLUMN_SPEEDS = [1, 1.45, 0.8, 1.2]
+
+/** Répartit les créations en colonnes, puis double chaque colonne pour
+ *  qu'elle reste remplie du haut en bas pendant toute la remontée. */
+function buildColumns(count: number) {
+  const columns: (typeof creations)[] = Array.from({ length: count }, () => [])
+  creations.forEach((item, i) => columns[i % count].push(item))
+  return columns.map((column) => [...column, ...column, ...column])
 }
 
-/**
- * Les emails sont très hauts : plutôt que d'en montrer un seul en entier, on
- * les fait défiler horizontalement, chacun à sa propre hauteur, comme un mur
- * de créations qu'on longe.
- */
+const COLUMNS = buildColumns(COLUMN_SPEEDS.length)
+
 export default function Creations() {
   const root = useRef<HTMLElement>(null)
 
@@ -34,123 +32,94 @@ export default function Creations() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      const track = el.querySelector<HTMLElement>("[data-track]")
-      const viewport = el.querySelector<HTMLElement>("[data-viewport]")
-      if (!track || !viewport) return
-
-      // La distance à parcourir dépend de la largeur réelle du contenu, donc
-      // ajouter ou retirer une création ne casse rien.
-      const distance = () => Math.max(0, track.scrollWidth - viewport.clientWidth)
-
-      gsap.to(track, {
-        x: () => -distance(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: el,
-          start: "top top",
-          end: () => `+=${distance()}`,
-          pin: true,
-          scrub: 0.8,
-          invalidateOnRefresh: true,
-          anticipatePin: 1,
-        },
-      })
-
-      // Chaque carte dérive verticalement à son propre rythme : c'est ce qui
-      // crée la sensation de parallaxe pendant le défilement horizontal.
-      gsap.utils.toArray<HTMLElement>("[data-panel]").forEach((panel, i) => {
-        gsap.fromTo(
-          panel,
-          { y: i % 2 ? 32 : -32 },
-          {
-            y: i % 2 ? -32 : 32,
-            ease: "none",
-            scrollTrigger: {
-              trigger: el,
-              start: "top top",
-              end: () => `+=${distance()}`,
-              scrub: 1,
-              invalidateOnRefresh: true,
-            },
+      // Les colonnes remontent pendant toute la traversée de la section. Chaque
+      // colonne est triplée, donc translater d'un tiers de sa hauteur revient à
+      // boucler sans jamais laisser de vide.
+      gsap.utils.toArray<HTMLElement>("[data-column]").forEach((column, i) => {
+        gsap.to(column, {
+          yPercent: -33.33 * COLUMN_SPEEDS[i % COLUMN_SPEEDS.length],
+          ease: "none",
+          scrollTrigger: {
+            trigger: el,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.6,
           },
-        )
+        })
       })
+
+      // Le texte apparaît une fois la section bien engagée, puis s'efface
+      // juste avant qu'elle libère le défilement.
+      gsap
+        .timeline({
+          scrollTrigger: { trigger: el, start: "top 60%", end: "top top", scrub: 0.8 },
+        })
+        .from("[data-reveal] > span", { yPercent: 110, duration: 1, stagger: 0.15 })
+        .from("[data-reveal-fade]", { opacity: 0, y: 20, duration: 0.8 }, "-=0.5")
     }, el)
 
     return () => ctx.revert()
   }, [])
 
   return (
-    <section ref={root} id="creations" className="relative overflow-hidden bg-ink">
-      <div data-viewport className="flex min-h-[100svh] flex-col justify-center py-12">
-        <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6">
-          <Eyebrow tone="lemon">{content.creations.eyebrow}</Eyebrow>
-          <h2 className="display mt-5 max-w-3xl text-[clamp(1.9rem,4.6vw,3.5rem)] text-cream">
-            {content.creations.title[0]}{" "}
-            <span className="text-green">{content.creations.title[1]}</span>{" "}
-            {content.creations.title[2]}
-          </h2>
-          <p className="mt-4 max-w-xl text-base font-medium text-cream/70">{content.creations.lead}</p>
+    // Section volontairement longue : le texte reste collé au centre de l'écran
+    // pendant que les créations défilent derrière lui.
+    <section ref={root} id="creations" className="relative h-[280svh] bg-ink">
+      <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden">
+        {/* Mur de créations, très atténué pour ne jamais gêner la lecture */}
+        <div
+          aria-hidden
+          className="absolute inset-0 grid grid-cols-2 gap-4 opacity-[0.22] sm:grid-cols-3 sm:gap-6 lg:grid-cols-4"
+        >
+          {COLUMNS.map((column, i) => (
+            <div
+              key={i}
+              data-column
+              className={`flex flex-col gap-4 will-change-transform sm:gap-6 ${
+                i === 3 ? "hidden lg:flex" : i === 2 ? "hidden sm:flex" : ""
+              }`}
+              style={{ marginTop: `${i % 2 ? -8 : 0}rem` }}
+            >
+              {column.map((item, j) => (
+                <div key={`${item.brand}-${j}`} className="overflow-hidden rounded-2xl">
+                  <Image
+                    src={item.src ?? "/hero/scene-v2.png"}
+                    alt=""
+                    width={600}
+                    height={1400}
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    className="w-full"
+                  />
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
 
-        {/* Le padding vertical laisse la place à la dérive parallaxe des cartes */}
-        <div className="mt-6 overflow-hidden py-8">
-          <div data-track className="flex w-max items-center gap-6 px-4 will-change-transform sm:px-6">
-            {creations.map((item, i) => (
-              <figure
-                key={item.brand}
-                data-panel
-                className="sticker-lg w-[62vw] shrink-0 overflow-hidden rounded-[1.75rem] bg-cream sm:w-[20rem]"
-              >
-                <div className="relative h-[20rem] overflow-hidden">
-                  {item.src ? (
-                    <Image
-                      src={item.src}
-                      alt={`Email conçu pour ${item.brand}`}
-                      fill
-                      sizes="(max-width: 640px) 62vw, 20rem"
-                      className="object-cover object-top"
-                    />
-                  ) : (
-                    <EmailSkeleton tone={item.tone} seed={i} />
-                  )}
-                </div>
+        {/* Voile qui garantit le contraste du texte quelle que soit l'image derrière */}
+        <div aria-hidden className="absolute inset-0 bg-ink/45" />
 
-                <figcaption className="flex items-center justify-between gap-3 border-t-4 border-ink px-5 py-4">
-                  <div>
-                    <p className="display text-lg leading-tight">{item.brand}</p>
-                    <p className="text-sm font-semibold text-ink/60">{item.tag}</p>
-                  </div>
-                  <Sticker name={i % 2 ? "enveloppe" : "paper-plane"} size={30} className="shrink-0" />
-                </figcaption>
-              </figure>
-            ))}
+        <div className="relative z-10 mx-auto max-w-3xl px-5 text-center">
+          <div data-reveal-fade>
+            <Eyebrow tone="lemon">{content.creations.eyebrow}</Eyebrow>
           </div>
+
+          <h2 className="display mt-6 text-[clamp(2.2rem,7vw,5rem)] text-cream">
+            {content.creations.title.map((line, i) => (
+              <span key={line} data-reveal className="block overflow-hidden pb-[0.06em]">
+                <span className={`block ${i === 1 ? "text-green" : ""}`}>{line}</span>
+              </span>
+            ))}
+          </h2>
+
+          <p
+            data-reveal-fade
+            className="mx-auto mt-6 max-w-xl text-lg leading-relaxed font-medium text-cream/75"
+          >
+            {content.creations.lead}
+          </p>
         </div>
       </div>
     </section>
-  )
-}
-
-/** Maquette d'email affichée tant que la vraie image n'est pas déposée. */
-function EmailSkeleton({ tone, seed }: { tone: Creation["tone"]; seed: number }) {
-  const bars = [92, 74, 84, 60]
-  return (
-    <div aria-hidden className={`flex h-full flex-col gap-3 p-5 ${TONES[tone]}`}>
-      <div className="h-3 w-16 rounded-full bg-ink/25" />
-      <div className="h-9 w-11/12 rounded-lg bg-ink/80" />
-      <div className="h-9 w-7/12 rounded-lg bg-ink/80" />
-      <div className="mt-1 h-32 rounded-xl border-[3px] border-ink/20 bg-cream/70" />
-      <div className="mt-1 space-y-2">
-        {bars.map((w, i) => (
-          <div
-            key={i}
-            className="h-2.5 rounded-full bg-ink/20"
-            style={{ width: `${w - ((seed + i) % 3) * 6}%` }}
-          />
-        ))}
-      </div>
-      <div className="mt-auto h-9 w-40 rounded-full bg-ink" />
-    </div>
   )
 }

@@ -41,11 +41,9 @@ export default function Clouds({
   }, [duration])
 
   return (
-    <div
-      aria-hidden
-      className={`pointer-events-none absolute overflow-hidden ${className}`}
-      style={{ opacity }}
-    >
+    // Pas de `overflow-hidden` ici : il coupait les nuages au carré. C'est la
+    // section parente qui rogne ce qui dépasse.
+    <div aria-hidden className={`pointer-events-none absolute ${className}`} style={{ opacity }}>
       <div ref={track} className="flex w-max will-change-transform">
         {[0, 1].map((i) => (
           <Image
