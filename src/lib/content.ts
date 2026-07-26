@@ -20,8 +20,11 @@ export const content = {
   },
 
   // Le hero ne porte que le titre et un bouton : la scène illustrée fait le reste.
+  // Les trois lignes se révèlent l'une après l'autre — c'est le parcours client
+  // raconté en trois temps.
   hero: {
-    title: ["Vos emails,", "votre meilleur vendeur"],
+    title: ["Vos clients ouvrent.", "Cliquent.", "Achètent."],
+    kicker: "Email & SMS marketing, avec du design qui sort du lot.",
     cta: "Commencer maintenant",
     scroll: "Défiler",
   },

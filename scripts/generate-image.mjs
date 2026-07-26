@@ -37,7 +37,10 @@ const res = await fetch(
       contents: [{ parts }],
       generationConfig: {
         responseModalities: ['IMAGE'],
-        imageConfig: { aspectRatio: process.env.ASPECT ?? '1:1' },
+        imageConfig: {
+          aspectRatio: process.env.ASPECT ?? '1:1',
+          imageSize: process.env.SIZE ?? '2K', // 1K | 2K | 4K
+        },
       },
     }),
   },
