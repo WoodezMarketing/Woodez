@@ -1,6 +1,8 @@
 import Image from "next/image"
 import type { ComponentProps } from "react"
 
+// `ink` est volontairement absent des boutons : un fond noir sous un contour
+// et une ombre noirs donne un bloc illisible. Le bouton principal est blanc.
 const TONES = {
   green: "bg-green text-cream",
   ink: "bg-ink text-cream",

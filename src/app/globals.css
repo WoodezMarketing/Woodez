@@ -53,13 +53,19 @@
 }
 
 @layer components {
-  /* Gyoza est toujours en Black + majuscules */
+  /* Gyoza est toujours en Black + majuscules. L'interligne doit rester assez
+     large pour que les accents (É, À, Ç) ne mordent pas la ligne du dessus. */
   .display {
     font-family: var(--font-display);
     font-weight: 900;
     text-transform: uppercase;
-    line-height: 0.88;
+    line-height: 1.06;
     letter-spacing: -0.02em;
+  }
+
+  /* Empêche un mot seul sur la dernière ligne d'un paragraphe. */
+  .prose-balanced {
+    text-wrap: pretty;
   }
 
   /* Le trait épais du langage sticker de la marque */

@@ -23,8 +23,11 @@ export const content = {
   // Les trois lignes se révèlent l'une après l'autre — c'est le parcours client
   // raconté en trois temps.
   hero: {
-    title: ["Vos clients ouvrent.", "Cliquent.", "Achètent."],
-    kicker: "Email & SMS marketing, avec du design qui sort du lot.",
+    // Découpé en lignes courtes : le titre reste étroit et centré au lieu de
+    // s'étaler sur toute la largeur de l'écran.
+    title: ["Fais revenir", "tes clients.", "Encore et encore."],
+    kicker:
+      "Le email et SMS marketing conçu pour fidéliser, automatiser et faire grandir ton commerce.",
     cta: "Commencer maintenant",
     scroll: "Défiler",
   },
@@ -34,11 +37,50 @@ export const content = {
   stats: {
     title: ["Les chiffres", "parlent"],
     items: [
-      { value: 300, prefix: "+", suffix: "", label: "clients satisfaits", color: "green" },
-      { value: 30, prefix: "", suffix: "%", label: "du revenu généré par email", color: "lemon" },
-      { value: 100, prefix: "", suffix: "%", label: "fait main, zéro template", color: "coral" },
-      { value: 14, prefix: "", suffix: " jours", label: "avant votre première campagne", color: "violet" },
+      {
+        value: 300,
+        prefix: "+",
+        suffix: "",
+        label: "clients satisfaits",
+        note: "Des marques qui nous ont fait confiance.",
+        color: "green",
+        icon: "heart",
+      },
+      {
+        value: 30,
+        prefix: "",
+        suffix: "%",
+        label: "du revenu par email",
+        note: "La part que le courriel prend dans vos ventes.",
+        color: "lemon",
+        icon: "enveloppe",
+      },
+      {
+        value: 100,
+        prefix: "",
+        suffix: "%",
+        label: "fait main",
+        note: "Zéro template recyclé, jamais.",
+        color: "coral",
+        icon: "target",
+      },
+      {
+        value: 14,
+        prefix: "",
+        suffix: " jours",
+        label: "avant votre première campagne",
+        note: "Le temps qu'il faut pour vous mettre en ligne.",
+        color: "violet",
+        icon: "paper-plane",
+      },
     ],
+  },
+
+  // Section de révélation : le texte s'allume mot par mot au défilement.
+  reveal: {
+    text: "On augmente le revenu de ta boutique jusqu'à 40 % en installant un vrai système de rétention, et en habillant chaque envoi aux couleurs de ta marque.",
+    /** Ces mots restent en vert une fois allumés. */
+    highlight: ["40 %", "rétention", "marque"],
   },
 
   services: {

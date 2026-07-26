@@ -45,19 +45,24 @@ export default function Hero() {
       {/* Ciel : deux bandes de nuages à des vitesses différentes, en mouvement
           dès le chargement. C'est le seul élément animé sans interaction. */}
       <div data-sky aria-hidden className="absolute inset-0 z-0">
+        {/* Bandes plus larges donc nuages plus petits, et placées haut : plus
+            bas elles se chevauchaient et écrasaient la scène. */}
+        {/* La largeur de bande commande la taille des nuages : plus la bande
+            est étroite, plus les nuages sont petits. Elle doit malgré tout
+            rester au-dessus de 100 vw, sinon la boucle laisse un trou. */}
         <Clouds
           src="/hero/clouds-b-v2.png"
-          width={280}
-          duration={150}
-          opacity={0.5}
-          className="inset-x-0 top-[2%]"
+          width={135}
+          duration={190}
+          opacity={0.4}
+          className="inset-x-0 top-[3%]"
         />
         <Clouds
           src="/hero/clouds-a-v2.png"
-          width={200}
-          duration={95}
-          opacity={0.85}
-          className="inset-x-0 top-[8%]"
+          width={115}
+          duration={120}
+          opacity={0.75}
+          className="inset-x-0 top-[26%] sm:top-[22%]"
         />
       </div>
 
@@ -67,9 +72,9 @@ export default function Hero() {
       >
         {/* Titre en encre : le vert de marque disparaîtrait sur le coup de
             pinceau vert de la scène juste derrière. */}
-        <h1 className="display max-w-full text-[clamp(2rem,5vw,4rem)] text-ink">
+        <h1 className="display max-w-full text-[clamp(2.4rem,5.6vw,4.4rem)] text-ink">
           {content.hero.title.map((line) => (
-            <span key={line} data-line className="block overflow-hidden pb-[0.06em]">
+            <span key={line} data-line className="block overflow-hidden pb-[0.08em]">
               <span className="block">{line}</span>
             </span>
           ))}
@@ -77,13 +82,13 @@ export default function Hero() {
 
         <p
           data-fade
-          className="mt-5 max-w-md text-base leading-snug font-bold text-ink sm:text-lg"
+          className="prose-balanced mt-5 max-w-[24ch] text-base leading-snug font-bold text-ink sm:max-w-[36ch] sm:text-lg"
         >
           {content.hero.kicker}
         </p>
 
-        <div data-fade className="mt-7">
-          <Button href="#contact" tone="ink" className="text-lg">
+        <div data-fade className="mt-6">
+          <Button href="#contact" tone="cream" className="text-lg">
             {content.hero.cta}
           </Button>
         </div>
@@ -93,21 +98,20 @@ export default function Hero() {
           se réduisent à une frise illisible. */}
       <div
         data-scene
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex translate-y-[6%] justify-center"
+        // Décalée vers le bas pour que la tête de Woodez passe sous le bouton.
+        // On ne perd que de l'herbe uniforme en bas de l'image.
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex translate-y-[6%] justify-center lg:translate-y-[16%]"
       >
         <Image
-          src="/hero/scene-v2.png"
-          alt="Woodez et sa bande : une enveloppe emportée par un avion de papier, une boîte aux lettres renversée et un téléphone curieux"
+          src="/hero/scene-v3.png"
+          alt="Woodez en hoodie salue de la patte, entouré d'une enveloppe portée par un avion de papier, d'une boîte aux lettres renversée et d'un téléphone bavard"
           width={3840}
           height={1629}
           priority
-          sizes="(max-width: 640px) 250vw, (max-width: 1024px) 140vw, 100vw"
-          className="w-[250%] max-w-none sm:w-[140%] lg:w-full"
+          sizes="(max-width: 640px) 210vw, (max-width: 1024px) 140vw, 100vw"
+          className="w-[210%] max-w-none sm:w-[140%] lg:w-full"
         />
       </div>
-
-      {/* Raccord plein largeur avec la section suivante */}
-      <div aria-hidden className="absolute inset-x-0 bottom-0 z-10 h-4 bg-scene-grass" />
 
       <a
         href="#services"

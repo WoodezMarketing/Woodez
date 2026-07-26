@@ -4,6 +4,7 @@ import Marquee from "@/components/Marquee"
 import Stats from "@/components/Stats"
 import Services from "@/components/Services"
 import Creations from "@/components/Creations"
+import Reveal from "@/components/Reveal"
 import Comparison from "@/components/Comparison"
 import Faq from "@/components/Faq"
 import FinalCta from "@/components/FinalCta"
@@ -17,6 +18,7 @@ export default function Home() {
         <Hero />
         <Marquee />
         <Stats />
+        <Reveal />
         <Services />
         <Creations />
         <Comparison />

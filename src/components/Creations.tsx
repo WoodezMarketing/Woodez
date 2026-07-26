@@ -37,13 +37,15 @@ export default function Creations() {
       // boucler sans jamais laisser de vide.
       gsap.utils.toArray<HTMLElement>("[data-column]").forEach((column, i) => {
         gsap.to(column, {
-          yPercent: -33.33 * COLUMN_SPEEDS[i % COLUMN_SPEEDS.length],
+          // Course volontairement courte : à pleine vitesse de molette, une
+          // course longue transformait le mur en flou illisible.
+          yPercent: -13 * COLUMN_SPEEDS[i % COLUMN_SPEEDS.length],
           ease: "none",
           scrollTrigger: {
             trigger: el,
             start: "top bottom",
             end: "bottom top",
-            scrub: 0.6,
+            scrub: 1.4,
           },
         })
       })
@@ -64,7 +66,7 @@ export default function Creations() {
   return (
     // Section volontairement longue : le texte reste collé au centre de l'écran
     // pendant que les créations défilent derrière lui.
-    <section ref={root} id="creations" className="relative h-[280svh] bg-ink">
+    <section ref={root} id="creations" className="relative h-[190svh] bg-ink">
       <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden">
         {/* Mur de créations, très atténué pour ne jamais gêner la lecture */}
         <div
@@ -83,7 +85,7 @@ export default function Creations() {
               {column.map((item, j) => (
                 <div key={`${item.brand}-${j}`} className="overflow-hidden rounded-2xl">
                   <Image
-                    src={item.src ?? "/hero/scene-v2.png"}
+                    src={item.src ?? "/hero/scene-v3.png"}
                     alt=""
                     width={600}
                     height={1400}
@@ -114,7 +116,7 @@ export default function Creations() {
 
           <p
             data-reveal-fade
-            className="mx-auto mt-6 max-w-xl text-lg leading-relaxed font-medium text-cream/75"
+            className="prose-balanced mx-auto mt-6 max-w-lg text-lg leading-relaxed font-medium text-cream/75"
           >
             {content.creations.lead}
           </p>
