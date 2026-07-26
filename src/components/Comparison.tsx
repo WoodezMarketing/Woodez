@@ -71,18 +71,20 @@ export default function Comparison() {
               sépare les deux camps au lieu d'être un mot noyé dans le titre. */}
           <h2
             data-heading
-            className="display display-3d mt-6 flex flex-nowrap items-center justify-center gap-x-2 text-[clamp(1.9rem,6vw,4.5rem)] sm:gap-x-3"
+            className="display display-3d mt-6 flex flex-nowrap items-center justify-center gap-x-2 text-[clamp(2.4rem,6vw,4.5rem)] sm:gap-x-3"
           >
             <span className="line-mask">
               <span className="block text-green">{content.comparison.title[0]}</span>
             </span>
 
+            {/* Taille fixe plutôt que relative au titre : en `em` la pastille
+                devenait un point minuscule et le mot dedans, une tache. */}
             <span
               data-vs
-              className="sticker flex aspect-square w-[0.9em] shrink-0 items-center justify-center rounded-full bg-lemon text-[0.34em] text-ink"
+              className="sticker flex size-12 shrink-0 items-center justify-center rounded-full bg-ink text-base text-cream sm:size-16 sm:text-xl"
               style={{ WebkitTextStroke: "0", textShadow: "none" }}
             >
-              vs
+              VS
             </span>
 
             <span className="line-mask">
@@ -110,14 +112,14 @@ export default function Comparison() {
                 }`}
               >
                 {i === 0 ? (
-                  // La tête de Woodez remplace le mot : la colonne est étroite
-                  // sur mobile et le logo se lit mieux qu'un nom tronqué.
+                  // Le wordmark en relief remplace le mot : la colonne est
+                  // étroite sur mobile et le logo se lit mieux qu'un nom coupé.
                   <Image
-                    src="/brand/mascot.svg"
+                    src="/brand/wordmark-3d.svg"
                     alt={col}
-                    width={44}
-                    height={44}
-                    className="size-9 sm:size-12"
+                    width={160}
+                    height={48}
+                    className="h-5 w-auto sm:h-7"
                   />
                 ) : (
                   <span className="display text-[0.68rem] leading-tight sm:text-base">{col}</span>

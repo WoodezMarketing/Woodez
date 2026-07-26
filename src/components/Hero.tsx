@@ -75,7 +75,7 @@ export default function Hero() {
       >
         {/* Deux découpes distinctes : le repli automatique ne tombe pas au bon
             endroit sur petit écran, on impose donc les lignes. */}
-        <h1 className="display display-3d text-[clamp(2.4rem,5.2vw,4.2rem)]">
+        <h1 className="display display-3d text-[clamp(3.05rem,5.2vw,4.2rem)]">
           <span className="block sm:hidden">
             {content.hero.titleMobile.map((line) => (
               <span key={line} data-line className="line-mask">
@@ -95,7 +95,7 @@ export default function Hero() {
 
         <p
           data-fade
-          className="prose-balanced mt-5 max-w-[24ch] text-base leading-snug font-bold text-ink sm:max-w-[36ch] sm:text-lg"
+          className="prose-balanced mt-5 max-w-[34ch] text-lg leading-snug font-bold text-ink sm:max-w-[36ch]"
         >
           {content.hero.kicker}
         </p>

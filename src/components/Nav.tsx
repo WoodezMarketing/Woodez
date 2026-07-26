@@ -106,21 +106,47 @@ export default function Nav() {
             </Button>
           </span>
 
-          {/* La bulle du menu : refermée c'est un simple rond, ouverte elle
-              s'étire vers le bas et laisse apparaître les liens. Ce n'est pas
-              un panneau séparé, c'est la même pastille qui grandit. */}
+          {/* La bulle du menu : refermée c'est un rond parfait, ouverte elle
+              s'étire vers la gauche et laisse apparaître les liens en ligne.
+              Ce n'est pas un panneau séparé, c'est la même pastille qui
+              s'allonge — d'où la transition sur `max-width` et non sur
+              `width`, qui ne s'anime pas depuis `auto`. */}
           <div
-            className={`sticker overflow-hidden rounded-[1.75rem] bg-cream transition-all duration-500 ${
-              open ? "w-64" : "w-12"
-            } ${collapsed ? "lg:block" : "lg:hidden"}`}
+            className={`sticker flex h-12 items-center justify-end overflow-hidden rounded-full bg-cream transition-[max-width] duration-500 ${
+              open ? "max-w-[42rem]" : "max-w-12"
+            } ${collapsed ? "lg:flex" : "lg:hidden"}`}
             style={{ transitionTimingFunction: "cubic-bezier(0.34, 1.4, 0.5, 1)" }}
           >
+            <nav
+              className={`flex items-center gap-1 pl-3 whitespace-nowrap transition-opacity duration-300 ${
+                open ? "opacity-100 delay-150" : "pointer-events-none opacity-0"
+              }`}
+            >
+              {links.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-full px-3 py-2 text-sm font-semibold transition-colors hover:bg-mint"
+                >
+                  {link.label}
+                </a>
+              ))}
+              <a
+                href="#contact"
+                onClick={() => setOpen(false)}
+                className="ml-1 rounded-full bg-green px-4 py-2 text-sm font-bold text-cream"
+              >
+                {content.nav.cta}
+              </a>
+            </nav>
+
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
-              className="flex h-12 w-full items-center justify-end pr-[0.9rem]"
+              className="flex size-12 shrink-0 items-center justify-center"
             >
               <span className="relative block h-4 w-5">
                 <span
@@ -140,34 +166,6 @@ export default function Nav() {
                 />
               </span>
             </button>
-
-            <div
-              className={`grid transition-all duration-500 ${
-                open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-              }`}
-            >
-              <div className="overflow-hidden">
-                <nav className="flex flex-col gap-1 px-3 pb-3">
-                  {links.map((link) => (
-                    <a
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setOpen(false)}
-                      className="rounded-2xl px-4 py-3 text-right font-semibold whitespace-nowrap transition-colors hover:bg-mint"
-                    >
-                      {link.label}
-                    </a>
-                  ))}
-                  <a
-                    href="#contact"
-                    onClick={() => setOpen(false)}
-                    className="mt-1 rounded-2xl bg-green px-4 py-3 text-center font-bold whitespace-nowrap text-cream"
-                  >
-                    {content.nav.cta}
-                  </a>
-                </nav>
-              </div>
-            </div>
           </div>
         </div>
       </div>

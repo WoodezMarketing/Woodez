@@ -82,15 +82,23 @@ export default function Creations() {
               }`}
               style={{ marginTop: `${i % 2 ? -8 : 0}rem` }}
             >
+              {/* Hauteur fixe par tuile : laissées à leur ratio naturel, les
+                  emails les plus longs faisaient des colonnes de 10 000 px et
+                  les images du bas, chargées en différé, n'arrivaient jamais —
+                  d'où les trous au bas de l'écran. */}
               {column.map((item, j) => (
-                <div key={`${item.brand}-${j}`} className="overflow-hidden rounded-2xl">
+                <div
+                  key={`${item.brand}-${j}`}
+                  className="h-64 shrink-0 overflow-hidden rounded-2xl sm:h-80"
+                >
                   <Image
                     src={item.src ?? "/hero/scene-v3.png"}
                     alt=""
                     width={600}
                     height={1400}
+                    loading={j < 3 ? "eager" : "lazy"}
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="w-full"
+                    className="h-full w-full object-cover object-top"
                   />
                 </div>
               ))}

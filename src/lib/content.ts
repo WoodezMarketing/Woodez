@@ -67,15 +67,6 @@ export const content = {
         color: "coral",
         icon: "target",
       },
-      {
-        value: 14,
-        prefix: "",
-        suffix: " jours",
-        label: "avant votre première campagne",
-        note: "Le temps qu'il faut pour vous mettre en ligne.",
-        color: "violet",
-        icon: "paper-plane",
-      },
     ],
   },
 
@@ -156,7 +147,7 @@ export const content = {
   },
 
   faq: {
-    eyebrow: "Les vraies questions",
+    eyebrow: "FAQ",
     title: ["On vous", "répond"],
     items: [
       {

@@ -40,7 +40,7 @@ export default function Faq() {
       <div className="mx-auto grid max-w-[1200px] gap-12 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
         <div className="lg:sticky lg:top-32 lg:self-start">
           <Eyebrow tone="lemon">{content.faq.eyebrow}</Eyebrow>
-          <h2 data-faq-heading className="display display-3d mt-6 text-[clamp(2.2rem,6vw,4.5rem)]">
+          <h2 data-faq-heading className="display display-3d mt-6 text-[clamp(2.9rem,6vw,4.5rem)]">
             <span className="line-mask">
               <span className="block">{content.faq.title[0]}</span>
             </span>

@@ -75,9 +75,9 @@
      remplissage, sinon il ronge l'intérieur des lettres. */
   .display-3d {
     color: var(--color-cream);
-    -webkit-text-stroke: 0.052em var(--color-ink);
+    -webkit-text-stroke: 0.085em var(--color-ink);
     paint-order: stroke fill;
-    text-shadow: 0.055em 0.055em 0 var(--color-ink);
+    text-shadow: 0.1em 0.1em 0 var(--color-ink);
   }
 
   /* Masque de révélation ligne par ligne. Le rembourrage laisse passer les
@@ -86,9 +86,15 @@
   .line-mask {
     display: block;
     overflow: hidden;
-    padding-top: 0.18em;
-    margin-top: -0.18em;
-    padding-bottom: 0.1em;
+    /* Le contour et l'ombre portée débordent du bloc de la lettre : sans ce
+       rembourrage, le masque leur coupe le haut, le bas et la droite. Les
+       marges négatives annulent son effet sur la mise en page. */
+    padding-top: 0.24em;
+    margin-top: -0.24em;
+    padding-bottom: 0.2em;
+    margin-bottom: -0.12em;
+    padding-right: 0.16em;
+    margin-right: -0.16em;
   }
 
   /* Le trait épais du langage sticker de la marque */

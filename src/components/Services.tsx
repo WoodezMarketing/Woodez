@@ -48,10 +48,8 @@ export default function Services() {
       <div className="mx-auto max-w-[1200px]">
         <div className="mb-14 text-center">
           <Eyebrow tone="lemon">{content.services.eyebrow}</Eyebrow>
-          <h2 className="display mx-auto mt-5 max-w-4xl text-[clamp(2rem,6vw,4.5rem)]">
-            {content.services.title[0]}{" "}
-            <span className="text-green">{content.services.title[1]}</span>{" "}
-            {content.services.title[2]}
+          <h2 className="display display-3d mx-auto mt-5 max-w-4xl text-[clamp(2.6rem,6vw,4.5rem)]">
+            {content.services.title.join(" ")}
           </h2>
         </div>
 

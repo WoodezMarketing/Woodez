@@ -65,10 +65,8 @@ export default function FinalCta() {
       </div>
 
       <div className="mx-auto max-w-3xl text-center">
-        <h2 className="display display-3d text-[clamp(2.2rem,6.4vw,5rem)]">
-          {content.cta.title[0]}{" "}
-          <span className="text-ink">{content.cta.title[1]}</span>{" "}
-          {content.cta.title[2]}
+        <h2 className="display display-3d text-[clamp(2.6rem,6.4vw,5rem)]">
+          {content.cta.title.join(" ")}
         </h2>
 
         <p className="prose-balanced mx-auto mt-6 max-w-lg text-lg leading-relaxed font-medium text-cream/85">
