@@ -59,7 +59,7 @@ export default function Creations() {
         .timeline({
           scrollTrigger: { trigger: el, start: "top 60%", end: "top top", scrub: 0.8 },
         })
-        .from("[data-reveal] > span", { yPercent: 110, duration: 1, stagger: 0.15 })
+        .from("[data-reveal]", { y: 44, opacity: 0, duration: 1, stagger: 0.15 })
         .from("[data-reveal-fade]", { opacity: 0, y: 20, duration: 0.8 }, "-=0.5")
     }, el)
 
@@ -114,9 +114,13 @@ export default function Creations() {
             <Eyebrow tone="lemon">{content.creations.eyebrow}</Eyebrow>
           </div>
 
+          {/* Pas de masque ici : la révélation est pilotée au défilement et
+              peut repartir en arrière, on ne peut donc jamais le libérer. Il
+              rognait la queue du Q et l'ombre portée. Un fondu montant donne
+              le même effet sans rien couper. */}
           <h2 className="display display-3d mt-6 text-[clamp(3rem,9vw,5rem)] leading-[0.92]">
             {content.creations.title.map((line, i) => (
-              <span key={line} data-reveal className="line-mask">
+              <span key={line} data-reveal className="block">
                 <span className={`block ${i === 1 ? "text-green" : ""}`}>{line}</span>
               </span>
             ))}
