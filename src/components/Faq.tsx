@@ -56,7 +56,9 @@ export default function Faq() {
           <span className="line-mask">
             <span className="block">{line1}</span>
           </span>
-          <span className="line-mask mt-2">
+          {/* Remontée : le rembourrage du masque et celui de la pastille
+              s'additionnaient et creusaient un trou entre les deux lignes. */}
+          <span className="line-mask -mt-6 sm:-mt-8">
             <span className="block">
               <span
                 data-faq-badge
