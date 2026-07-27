@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { content } from "@/lib/content"
-import { Eyebrow, Sticker } from "./ui"
+import { Sticker } from "./ui"
 
 const TONES: Record<string, { card: string; chip: string }> = {
   green: { card: "bg-green text-cream", chip: "bg-cream text-ink" },
@@ -47,7 +47,6 @@ export default function Services() {
     <section ref={root} id="services" className="bg-cream px-4 py-20 sm:px-6 sm:py-28">
       <div className="mx-auto max-w-[1200px]">
         <div className="mb-14 text-center">
-          <Eyebrow tone="lemon">{content.services.eyebrow}</Eyebrow>
           <h2 className="display display-3d mx-auto mt-5 max-w-4xl text-[clamp(2.6rem,6vw,4.5rem)]">
             {content.services.title.join(" ")}
           </h2>

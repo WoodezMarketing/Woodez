@@ -10,6 +10,9 @@ export default function Nav() {
   const [collapsed, setCollapsed] = useState(false)
   const [open, setOpen] = useState(false)
   const root = useRef<HTMLElement>(null)
+  // Créé une seule fois : recréer le matchMedia à chaque rendu relancerait
+  // ses fonctions et empilerait les animations.
+  const [mm] = useState(() => gsap.matchMedia())
 
   // Repli au défilement vers le bas, retour au défilement vers le haut.
   // Uniquement sur grand écran : en mobile la barre est déjà minimale.
@@ -43,25 +46,46 @@ export default function Nav() {
     const ctx = gsap.context(() => {
       const parts = gsap.utils.toArray<HTMLElement>("[data-nav-part]")
 
+      // Le repli aspire les pastilles vers la droite ; le retour les fait
+      // rebondir depuis ce même point, dans l'ordre inverse. Sans le décalage
+      // inversé, la barre se contentait de réapparaître.
       gsap.to(parts, {
-        scaleX: collapsed ? 0.35 : 1,
-        scaleY: collapsed ? 0.8 : 1,
+        scaleX: collapsed ? 0.3 : 1,
+        scaleY: collapsed ? 0.75 : 1,
+        x: collapsed ? 40 : 0,
         opacity: collapsed ? 0 : 1,
-        duration: collapsed ? 0.32 : 0.55,
-        ease: collapsed ? "power3.in" : "back.out(1.8)",
-        stagger: collapsed ? 0.04 : 0.06,
+        duration: collapsed ? 0.3 : 0.6,
+        ease: collapsed ? "power3.in" : "back.out(2)",
+        stagger: collapsed ? 0.05 : { each: 0.07, from: "end" },
         pointerEvents: collapsed ? "none" : "auto",
       })
 
       gsap.fromTo(
         "[data-nav-logo]",
-        collapsed ? { scaleX: 1.25, scaleY: 0.78 } : { scaleX: 0.82, scaleY: 1.18 },
-        { scaleX: 1, scaleY: 1, duration: 0.7, ease: "elastic.out(1, 0.45)", delay: 0.15 },
+        collapsed ? { scaleX: 1.25, scaleY: 0.78 } : { scaleX: 0.78, scaleY: 1.22 },
+        { scaleX: 1, scaleY: 1, duration: 0.75, ease: "elastic.out(1, 0.4)", delay: 0.1 },
       )
+
+      // La bulle du menu est animée plutôt que masquée par une classe : sans
+      // ça elle apparaissait et disparaissait d'un coup, en rupture avec le
+      // reste de la barre.
+      mm.add("(min-width: 1024px)", () => {
+        gsap.to("[data-nav-bubble]", {
+          scale: collapsed ? 1 : 0,
+          opacity: collapsed ? 1 : 0,
+          duration: collapsed ? 0.5 : 0.28,
+          ease: collapsed ? "back.out(2.4)" : "power3.in",
+          delay: collapsed ? 0.12 : 0,
+          pointerEvents: collapsed ? "auto" : "none",
+        })
+      })
     }, el)
 
-    return () => ctx.revert()
-  }, [collapsed])
+    return () => {
+      ctx.revert()
+      mm.revert()
+    }
+  }, [collapsed, mm])
 
   const links = content.nav.links
 
@@ -114,9 +138,10 @@ export default function Nav() {
               La transition porte sur `max-width` et non `width`, qui ne
               s'anime pas depuis `auto`. */}
           <div
-            className={`sticker flex h-12 items-center justify-end overflow-hidden rounded-full bg-cream transition-[max-width] duration-500 ${
+            data-nav-bubble
+            className={`sticker flex h-12 origin-right items-center justify-end overflow-hidden rounded-full bg-cream transition-[max-width] duration-500 ${
               open ? "max-w-12 lg:max-w-[46rem]" : "max-w-12"
-            } ${collapsed ? "lg:flex" : "lg:hidden"}`}
+            }`}
             style={{ transitionTimingFunction: "cubic-bezier(0.34, 1.4, 0.5, 1)" }}
           >
             <nav
@@ -143,15 +168,16 @@ export default function Nav() {
               </a>
             </nav>
 
-            {/* `w-12` fixe plutôt que `size-12` : dans un conteneur en
-                `justify-end`, le bouton doit occuper exactement la largeur de
-                la bulle fermée, sinon l'icône se décale vers la droite. */}
+            {/* Le bouton prend la hauteur intérieure de la bulle et reste
+                carré : à 48 px fixes il débordait des 42 px de contenu (le
+                contour en mange 3 de chaque côté) et l'icône se retrouvait
+                décalée vers la gauche. */}
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
-              className="flex h-12 w-12 shrink-0 items-center justify-center"
+              className="flex aspect-square shrink-0 items-center justify-center self-stretch"
             >
               <span className="relative block h-4 w-5">
                 <span

@@ -19,7 +19,10 @@ export function Button({
   return (
     <a
       {...props}
-      className={`sticker inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-base font-bold transition-transform duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-none ${TONES[tone]} ${className}`}
+      // `display` met le libellé en Gyoza majuscules ; le léger rembourrage
+      // haut compense le fait que la fonte n'a pas de jambage, sinon le texte
+      // paraît collé au bas de la pastille.
+      className={`sticker display inline-flex items-center justify-center gap-2 rounded-full px-7 pt-4 pb-3.5 text-base transition-transform duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-none ${TONES[tone]} ${className}`}
     />
   )
 }

@@ -114,7 +114,7 @@ export default function Creations() {
             <Eyebrow tone="lemon">{content.creations.eyebrow}</Eyebrow>
           </div>
 
-          <h2 className="display display-3d mt-6 text-[clamp(3rem,9vw,5rem)]">
+          <h2 className="display display-3d mt-6 text-[clamp(3rem,9vw,5rem)] leading-[0.92]">
             {content.creations.title.map((line, i) => (
               <span key={line} data-reveal className="line-mask">
                 <span className={`block ${i === 1 ? "text-green" : ""}`}>{line}</span>

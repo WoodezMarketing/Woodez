@@ -88,7 +88,6 @@ export default function Footer() {
             >
               {CONTACT.phone}
             </a>
-            <p className="mt-2 text-sm font-semibold text-ink/60">{content.footer.madeIn} 🍁</p>
           </div>
 
           <div>
@@ -138,7 +137,6 @@ export default function Footer() {
           <p>
             © {new Date().getFullYear()} Woodez. {content.footer.rights}
           </p>
-          <p>Conçu et codé à la main.</p>
         </div>
       </div>
     </footer>

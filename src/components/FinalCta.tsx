@@ -73,7 +73,9 @@ export default function FinalCta() {
           {content.cta.lead}
         </p>
 
-        <div className="mt-10 flex flex-wrap justify-center gap-3">
+        {/* Empilés et pleine largeur sur mobile : deux pastilles de largeurs
+            différentes l'une sous l'autre se lisaient mal. */}
+        <div className="mx-auto mt-10 flex max-w-sm flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:justify-center">
           <Button href={`mailto:${CONTACT.email}`} tone="cream" className="text-lg">
             {content.cta.button}
           </Button>
