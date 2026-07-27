@@ -68,7 +68,10 @@ export default function FinalCta() {
         className="block w-full"
       />
 
-      <div className="relative overflow-hidden bg-grass px-4 pt-2 pb-14 sm:px-6 sm:pb-20">
+      {/* `overflow-hidden` retient les stickers du fond, mais il rasait aussi
+          le haut des lettres du titre : avec un interligne serré, les
+          majuscules de Gyoza dépassent de leur ligne. D'où ce rembourrage. */}
+      <div className="relative overflow-hidden bg-grass px-4 pt-10 pb-14 sm:px-6 sm:pt-12 sm:pb-20">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 hidden md:block">
         {CONFETTI.map((c) => (
           <div key={c.name} data-confetti className={`absolute ${c.className}`}>
