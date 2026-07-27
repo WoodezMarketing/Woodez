@@ -8,7 +8,7 @@ import { content } from "@/lib/content"
 import { reveal, revealLines } from "@/lib/anim"
 
 export default function Faq() {
-  const [open, setOpen] = useState<number | null>(2)
+  const [open, setOpen] = useState<number | null>(null)
   const root = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function Faq() {
           </span>
           {/* Remontée : le rembourrage du masque et celui de la pastille
               s'additionnaient et creusaient un trou entre les deux lignes. */}
-          <span className="line-mask -mt-6 sm:-mt-8">
+          <span className="line-mask -mt-9 sm:-mt-12">
             <span className="block">
               <span
                 data-faq-badge

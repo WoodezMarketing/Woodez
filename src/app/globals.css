@@ -21,6 +21,10 @@
   --color-scene-sky: #90d5f3;
   --color-scene-grass: #2d854f;
 
+  /* Échantillonné au bas de la bande de collines : la section d'appel final
+     doit prendre exactement cette teinte pour que le raccord soit invisible. */
+  --color-grass: #56d68d;
+
   /* Accents web — hors palette logo, réservés au site */
   --color-mint: #d3f5e5;
   --color-lemon: #ffd84d;

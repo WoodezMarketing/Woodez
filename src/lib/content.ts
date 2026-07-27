@@ -10,13 +10,9 @@ export const CONTACT = {
 
 export const content = {
   nav: {
-    links: [
-      { label: "Services", href: "#services" },
-      { label: "Créations", href: "#creations" },
-      { label: "Pourquoi nous", href: "#comparaison" },
-      { label: "FAQ", href: "#faq" },
-    ],
     cta: "Commencer maintenant",
+    /** Sur mobile la barre se réduit au logo et à ce libellé court. */
+    ctaShort: "Commencer",
   },
 
   // Le hero ne porte que le titre et un bouton : la scène illustrée fait le reste.

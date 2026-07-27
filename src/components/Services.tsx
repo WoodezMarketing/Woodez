@@ -12,6 +12,10 @@ const TONES: Record<string, { card: string; chip: string }> = {
   coral: { card: "bg-coral text-ink", chip: "bg-cream text-ink" },
 }
 
+/** Inclinaison de repos de chaque carte, en degrés. Assez faible pour rester
+ *  lisible, assez marquée pour qu'on la remarque. */
+const TILTS = [-1.8, 1.4, -1.1]
+
 export default function Services() {
   const root = useRef<HTMLElement>(null)
 
@@ -23,12 +27,20 @@ export default function Services() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      // Chaque carte rétrécit légèrement quand la suivante vient la recouvrir,
-      // ce qui donne la profondeur du paquet de cartes.
       gsap.utils.toArray<HTMLElement>("[data-card]").forEach((card, i, all) => {
+        // Chaque carte est posée de travers, dans un sens différent de sa
+        // voisine : le paquet a l'air empilé à la main plutôt qu'aligné au
+        // cordeau. La rotation passe par GSAP pour qu'elle survive au tween
+        // d'échelle, qui réécrit sinon toute la transformation.
+        gsap.set(card, { rotate: TILTS[i % TILTS.length] })
+
         if (i === all.length - 1) return
+
+        // La carte rétrécit et se redresse quand la suivante vient la
+        // recouvrir : c'est ce qui creuse la profondeur du paquet.
         gsap.to(card, {
           scale: 0.94 - (all.length - 2 - i) * 0.02,
+          rotate: TILTS[i % TILTS.length] * 0.35,
           ease: "none",
           scrollTrigger: {
             trigger: all[i + 1],

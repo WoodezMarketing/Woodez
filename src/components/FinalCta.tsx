@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import Image from "next/image"
 import { CONTACT, content } from "@/lib/content"
 import { Button, Sticker } from "./ui"
 
@@ -51,11 +52,23 @@ export default function FinalCta() {
   }, [])
 
   return (
-    <section
-      ref={root}
-      id="contact"
-      className="relative isolate overflow-hidden bg-green px-4 py-24 sm:px-6 sm:py-32"
-    >
+    // Pas de fond sur la section elle-même : la partie transparente au-dessus
+    // des collines laisse voir la section précédente, et le contenu qui suit
+    // repose sur le vert du gazon.
+    <section ref={root} id="contact" className="relative isolate">
+      {/* Ligne de collines. Le bas de l'image est un vert uni, repris à
+          l'identique par le bloc en dessous : le raccord est invisible et le
+          contenu a l'air posé sur le gazon. */}
+      <Image
+        src="/footer/Montagnes.png"
+        alt=""
+        aria-hidden
+        width={1536}
+        height={281}
+        className="block w-full"
+      />
+
+      <div className="relative overflow-hidden bg-grass px-4 pt-4 pb-24 sm:px-6 sm:pb-32">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 hidden md:block">
         {CONFETTI.map((c) => (
           <div key={c.name} data-confetti className={`absolute ${c.className}`}>
@@ -79,6 +92,7 @@ export default function FinalCta() {
             WhatsApp
           </Button>
         </div>
+      </div>
       </div>
     </section>
   )

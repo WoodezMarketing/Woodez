@@ -75,7 +75,7 @@ export default function Hero() {
       >
         {/* Deux découpes distinctes : le repli automatique ne tombe pas au bon
             endroit sur petit écran, on impose donc les lignes. */}
-        <h1 className="display display-3d text-[clamp(1.9rem,11.6vw,4.2rem)] leading-[0.9] sm:text-[clamp(2.4rem,5.2vw,4.2rem)]">
+        <h1 className="display display-3d text-[clamp(1.9rem,11.6vw,4.2rem)] leading-[0.84] sm:text-[clamp(2.4rem,5.2vw,4.2rem)]">
           <span className="block sm:hidden">
             {content.hero.titleMobile.map((line) => (
               <span key={line} data-line className="line-mask">

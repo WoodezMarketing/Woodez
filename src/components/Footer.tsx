@@ -54,7 +54,7 @@ export default function Footer() {
   return (
     // Le vert continue derrière : le bloc blanc a l'air posé sur la section
     // précédente plutôt que d'ouvrir une nouvelle bande.
-    <footer ref={root} className="bg-green p-4 sm:p-6">
+    <footer ref={root} className="bg-grass p-4 sm:p-6">
       {/* Pleine largeur, mais avec sa marge tout autour : la carte flotte. */}
       <div className="overflow-hidden rounded-[2.5rem] border-4 border-ink bg-cream">
         <div className="grid gap-10 p-8 sm:p-12 lg:grid-cols-3 lg:gap-8">
