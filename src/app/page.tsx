@@ -1,7 +1,6 @@
 import Nav from "@/components/Nav"
 import Hero from "@/components/Hero"
 import Marquee from "@/components/Marquee"
-import Stats from "@/components/Stats"
 import Services from "@/components/Services"
 import Creations from "@/components/Creations"
 import Reveal from "@/components/Reveal"
@@ -17,7 +16,6 @@ export default function Home() {
       <main>
         <Hero />
         <Marquee />
-        <Stats />
         <Reveal />
         <Services />
         <Creations />

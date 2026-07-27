@@ -37,39 +37,6 @@ export const content = {
 
   marquee: ["Email marketing", "SMS", "Klaviyo", "Design sur mesure", "Automatisations", "Rétention"],
 
-  stats: {
-    title: ["Les chiffres", "parlent"],
-    items: [
-      {
-        value: 300,
-        prefix: "+",
-        suffix: "",
-        label: "clients satisfaits",
-        note: "Des marques ecommerce de toutes tailles nous ont confié leur rétention, et sont restées.",
-        color: "green",
-        icon: "heart",
-      },
-      {
-        value: 30,
-        prefix: "",
-        suffix: "%",
-        label: "du revenu par email",
-        note: "C'est la part des ventes que le courriel et le SMS peuvent aller chercher, sur du trafic que tu as déjà payé.",
-        color: "lemon",
-        icon: "enveloppe",
-      },
-      {
-        value: 100,
-        prefix: "",
-        suffix: "%",
-        label: "à l'image de ta marque",
-        note: "Chaque envoi est dessiné à la main pour refléter ton branding au détail près : tes couleurs, ta typo, ton ton. Jamais un template recyclé.",
-        color: "coral",
-        icon: "target",
-      },
-    ],
-  },
-
   // Section de révélation : le texte s'allume mot par mot au défilement.
   reveal: {
     text: "On augmente le revenu de ta boutique jusqu'à 40% en installant un vrai système de rétention, et en habillant chaque envoi aux couleurs de ta marque.",

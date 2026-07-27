@@ -12,11 +12,13 @@ import { Eyebrow } from "./ui"
 const COLUMN_SPEEDS = [1, 1.45, 0.8, 1.2]
 
 /** Répartit les créations en colonnes, puis double chaque colonne pour
- *  qu'elle reste remplie du haut en bas pendant toute la remontée. */
+ *  qu'elle reste remplie du haut en bas pendant toute la remontée.
+ *  Les courriels sont montrés sur toute leur hauteur : deux exemplaires
+ *  suffisent largement, chaque image dépassant déjà la hauteur d'un écran. */
 function buildColumns(count: number) {
   const columns: (typeof creations)[] = Array.from({ length: count }, () => [])
   creations.forEach((item, i) => columns[i % count].push(item))
-  return columns.map((column) => [...column, ...column, ...column])
+  return columns.map((column) => [...column, ...column])
 }
 
 const COLUMNS = buildColumns(COLUMN_SPEEDS.length)
@@ -37,9 +39,10 @@ export default function Creations() {
       // boucler sans jamais laisser de vide.
       gsap.utils.toArray<HTMLElement>("[data-column]").forEach((column, i) => {
         gsap.to(column, {
-          // Course volontairement courte : à pleine vitesse de molette, une
-          // course longue transformait le mur en flou illisible.
-          yPercent: -13 * COLUMN_SPEEDS[i % COLUMN_SPEEDS.length],
+          // Course exprimée en pixels et non en pourcentage de la colonne :
+          // les courriels font plusieurs milliers de pixels de haut, un
+          // pourcentage donnerait une course démesurée et illisible.
+          y: -520 * COLUMN_SPEEDS[i % COLUMN_SPEEDS.length],
           ease: "none",
           scrollTrigger: {
             trigger: el,
@@ -82,23 +85,20 @@ export default function Creations() {
               }`}
               style={{ marginTop: `${i % 2 ? -8 : 0}rem` }}
             >
-              {/* Hauteur fixe par tuile : laissées à leur ratio naturel, les
-                  emails les plus longs faisaient des colonnes de 10 000 px et
-                  les images du bas, chargées en différé, n'arrivaient jamais —
-                  d'où les trous au bas de l'écran. */}
+              {/* Chaque courriel sur toute sa longueur, coins arrondis. La
+                  première image de chaque colonne est chargée sans attendre :
+                  elle dépasse à elle seule la hauteur de l'écran, ce qui
+                  garantit qu'aucun trou n'apparaisse le temps du chargement. */}
               {column.map((item, j) => (
-                <div
-                  key={`${item.brand}-${j}`}
-                  className="h-64 shrink-0 overflow-hidden rounded-2xl sm:h-80"
-                >
+                <div key={`${item.brand}-${j}`} className="overflow-hidden rounded-2xl sm:rounded-3xl">
                   <Image
-                    src={item.src ?? "/hero/scene-v3.png"}
+                    src={item.src}
                     alt=""
-                    width={600}
-                    height={1400}
-                    loading={j < 3 ? "eager" : "lazy"}
+                    width={item.width}
+                    height={item.height}
+                    loading={j === 0 ? "eager" : "lazy"}
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="h-full w-full object-cover object-top"
+                    className="h-auto w-full"
                   />
                 </div>
               ))}
