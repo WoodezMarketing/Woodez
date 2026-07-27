@@ -69,13 +69,9 @@ export default function FinalCta() {
           {content.cta.title.join(" ")}
         </h2>
 
-        <p className="prose-balanced mx-auto mt-6 max-w-lg text-lg leading-relaxed font-medium text-cream/85">
-          {content.cta.lead}
-        </p>
-
         {/* Empilés et pleine largeur sur mobile : deux pastilles de largeurs
             différentes l'une sous l'autre se lisaient mal. */}
-        <div className="mx-auto mt-10 flex max-w-sm flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:justify-center">
+        <div className="mx-auto mt-12 flex max-w-sm flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:justify-center">
           <Button href={`mailto:${CONTACT.email}`} tone="cream" className="text-lg">
             {content.cta.button}
           </Button>

@@ -22,8 +22,10 @@ export default function Nav() {
     let last = window.scrollY
     const onScroll = () => {
       const y = window.scrollY
-      if (Math.abs(y - last) < 12) return // ignore la micro-oscillation
-      const next = y > last && y > 160
+      // Seuil plus large qu'une simple anti-oscillation : il faut un geste
+      // franc pour basculer, sinon la barre clignote au moindre soubresaut.
+      if (Math.abs(y - last) < 40) return
+      const next = y > last && y > 200
       last = y
       setCollapsed((prev) => {
         if (prev === next) return prev
@@ -49,33 +51,38 @@ export default function Nav() {
       // Le repli aspire les pastilles vers la droite ; le retour les fait
       // rebondir depuis ce même point, dans l'ordre inverse. Sans le décalage
       // inversé, la barre se contentait de réapparaître.
+      // Le repli aspire les pastilles vers la droite ; le retour les ramène en
+      // glissant depuis le haut, sans rebond, avec un fondu long. Le rebond
+      // précédent faisait « apparaître » la barre d'un coup.
       gsap.to(parts, {
-        scaleX: collapsed ? 0.3 : 1,
-        scaleY: collapsed ? 0.75 : 1,
-        x: collapsed ? 40 : 0,
+        scaleX: collapsed ? 0.4 : 1,
+        scaleY: collapsed ? 0.82 : 1,
+        x: collapsed ? 32 : 0,
+        y: collapsed ? -6 : 0,
         opacity: collapsed ? 0 : 1,
-        duration: collapsed ? 0.3 : 0.6,
-        ease: collapsed ? "power3.in" : "back.out(2)",
-        stagger: collapsed ? 0.05 : { each: 0.07, from: "end" },
+        duration: collapsed ? 0.42 : 0.85,
+        ease: collapsed ? "power2.in" : "power3.out",
+        stagger: collapsed ? 0.06 : { each: 0.09, from: "end" },
         pointerEvents: collapsed ? "none" : "auto",
       })
 
-      gsap.fromTo(
-        "[data-nav-logo]",
-        collapsed ? { scaleX: 1.25, scaleY: 0.78 } : { scaleX: 0.78, scaleY: 1.22 },
-        { scaleX: 1, scaleY: 1, duration: 0.75, ease: "elastic.out(1, 0.4)", delay: 0.1 },
-      )
+      gsap.to("[data-nav-logo]", {
+        scaleX: 1,
+        scaleY: 1,
+        duration: 0.7,
+        ease: "power3.out",
+      })
 
       // La bulle du menu est animée plutôt que masquée par une classe : sans
       // ça elle apparaissait et disparaissait d'un coup, en rupture avec le
       // reste de la barre.
       mm.add("(min-width: 1024px)", () => {
         gsap.to("[data-nav-bubble]", {
-          scale: collapsed ? 1 : 0,
+          scale: collapsed ? 1 : 0.4,
           opacity: collapsed ? 1 : 0,
-          duration: collapsed ? 0.5 : 0.28,
-          ease: collapsed ? "back.out(2.4)" : "power3.in",
-          delay: collapsed ? 0.12 : 0,
+          duration: collapsed ? 0.6 : 0.4,
+          ease: "power3.out",
+          delay: collapsed ? 0.18 : 0,
           pointerEvents: collapsed ? "auto" : "none",
         })
       })

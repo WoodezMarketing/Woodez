@@ -180,7 +180,6 @@ export const content = {
     // Espace insécable avant le « ? » : la règle française, et ça évite que le
     // point d'interrogation se retrouve seul sur sa ligne.
     title: ["Prêt à faire", "parler", "ta marque ?"],
-    lead: "Dis-nous où tu en es. On revient avec un plan concret.",
     button: "Commencer maintenant",
   },
 
