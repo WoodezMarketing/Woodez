@@ -72,7 +72,7 @@ export default function Faq() {
 
         <div className="mt-16 grid items-start gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12">
           {/* L'illustration reste en vue pendant qu'on parcourt les questions */}
-          <div data-faq-visual className="lg:sticky lg:top-28">
+          <div data-faq-visual className="hidden lg:sticky lg:top-28 lg:block">
             <div className="sticker-lg overflow-hidden rounded-[2.5rem]">
               <Image
                 src="/faq/woodez-questions.png"

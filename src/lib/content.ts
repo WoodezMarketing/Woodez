@@ -143,6 +143,8 @@ export const content = {
     // Espace insécable avant le « ? » : la règle française, et ça évite que le
     // point d'interrogation se retrouve seul sur sa ligne.
     title: ["Prêt à faire", "parler", "ta marque ?"],
+    /** Découpe imposée sur petit écran, pour un titre plus haut et plus large. */
+    titleMobile: ["Prêt à", "faire parler", "ta marque ?"],
     button: "Commencer maintenant",
   },
 

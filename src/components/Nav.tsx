@@ -38,18 +38,23 @@ export default function Nav() {
     if (!el) return
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
-    const ctx = gsap.context(() => {
-      gsap.to("[data-nav-part]", {
-        y: hidden ? -80 : 0,
-        opacity: hidden ? 0 : 1,
-        duration: hidden ? 0.4 : 0.7,
-        ease: hidden ? "power2.in" : "power3.out",
-        stagger: hidden ? 0.05 : { each: 0.08, from: "end" },
-        pointerEvents: hidden ? "none" : "auto",
-      })
-    }, el)
+    // Pas de `gsap.context` ici : son `revert()` de nettoyage réinitialise les
+    // styles à chaque bascule, ce qui coupait l'animation en cours et faisait
+    // sauter la barre au lieu de la faire glisser.
+    const parts = el.querySelectorAll("[data-nav-part]")
+    const tween = gsap.to(parts, {
+      y: hidden ? -110 : 0,
+      opacity: hidden ? 0 : 1,
+      duration: hidden ? 0.45 : 0.9,
+      ease: hidden ? "power2.in" : "power3.out",
+      stagger: hidden ? 0.06 : { each: 0.1, from: "end" },
+      pointerEvents: hidden ? "none" : "auto",
+      overwrite: "auto",
+    })
 
-    return () => ctx.revert()
+    return () => {
+      tween.kill()
+    }
   }, [hidden])
 
   return (
@@ -59,7 +64,9 @@ export default function Nav() {
           href="#top"
           aria-label="Woodez, retour en haut"
           data-nav-part
-          className="sticker pointer-events-auto flex items-center rounded-full bg-cream px-4 py-2"
+          // Même rembourrage vertical que le bouton, pour que les deux
+          // pastilles aient exactement la même épaisseur.
+          className="sticker pointer-events-auto flex items-center rounded-full bg-cream px-5 pt-4 pb-3.5"
         >
           <Image
             src="/brand/logo-horizontal.svg"
@@ -67,7 +74,7 @@ export default function Nav() {
             width={140}
             height={48}
             priority
-            className="h-7 w-auto"
+            className="h-6 w-auto"
           />
         </a>
 

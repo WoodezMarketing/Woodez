@@ -60,15 +60,15 @@ export default function FinalCta() {
           l'identique par le bloc en dessous : le raccord est invisible et le
           contenu a l'air posé sur le gazon. */}
       <Image
-        src="/footer/Montagnes.png"
+        src="/footer/montagnes-dodo-v2.png"
         alt=""
         aria-hidden
-        width={1536}
-        height={281}
+        width={3840}
+        height={944}
         className="block w-full"
       />
 
-      <div className="relative overflow-hidden bg-grass px-4 pt-4 pb-24 sm:px-6 sm:pb-32">
+      <div className="relative overflow-hidden bg-grass px-4 pt-2 pb-14 sm:px-6 sm:pb-20">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 hidden md:block">
         {CONFETTI.map((c) => (
           <div key={c.name} data-confetti className={`absolute ${c.className}`}>
@@ -78,8 +78,17 @@ export default function FinalCta() {
       </div>
 
       <div className="mx-auto max-w-3xl text-center">
-        <h2 className="display display-3d text-[clamp(2.6rem,6.4vw,5rem)]">
-          {content.cta.title.join(" ")}
+        {/* Trois lignes imposées sur mobile, à une taille bien plus grande :
+            le titre occupe alors vraiment la largeur de l'écran. */}
+        <h2 className="display display-3d text-[clamp(3rem,13vw,5rem)] leading-[0.92] sm:text-[clamp(2.6rem,6.4vw,5rem)]">
+          <span className="block sm:hidden">
+            {content.cta.titleMobile.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </span>
+          <span className="hidden sm:inline">{content.cta.title.join(" ")}</span>
         </h2>
 
         {/* Empilés et pleine largeur sur mobile : deux pastilles de largeurs
