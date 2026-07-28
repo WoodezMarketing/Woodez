@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
@@ -19,6 +18,8 @@ export default function StartForm() {
   const [index, setIndex] = useState(0)
   const [answers, setAnswers] = useState<Answers>({})
   const [sent, setSent] = useState(false)
+  const [envoiEnCours, setEnvoiEnCours] = useState(false)
+  const [echec, setEchec] = useState<string | null>(null)
   const [draft, setDraft] = useState("")
   const card = useRef<HTMLDivElement>(null)
 
@@ -63,23 +64,35 @@ export default function StartForm() {
     else allerA(index + 1, suite)
   }
 
-  const envoyer = (finales: Answers) => {
+  const envoyer = async (finales: Answers) => {
     if (!path) return
-    const lignes = visibleSteps(path, finales).map((s) => {
-      const brut = finales[s.id] ?? ""
-      const lisible =
-        s.kind === "choice" ? (s.choices.find((c) => c.value === brut)?.label ?? brut) : brut
-      return `${s.question}\n${lisible}`
-    })
-    const corps = [`Demande : ${path.label}`, "", ...lignes].join("\n\n")
+    setEnvoiEnCours(true)
+    setEchec(null)
 
-    // En attendant un vrai enregistrement côté serveur, la demande part par
-    // courriel : aucune piste n'est perdue.
-    const lien = `mailto:${CONTACT.email}?subject=${encodeURIComponent(
-      `Nouvelle demande — ${path.label}`,
-    )}&body=${encodeURIComponent(corps)}`
-    window.open(lien, "_self")
-    setSent(true)
+    // On envoie aussi les questions en clair : le libellé du choix est plus
+    // lisible qu'un code dans la base, et les questions peuvent évoluer.
+    const reponses: Answers = {}
+    for (const s of visibleSteps(path, finales)) {
+      const brut = finales[s.id] ?? ""
+      reponses[s.id] =
+        s.kind === "choice" ? (s.choices.find((c) => c.value === brut)?.label ?? brut) : brut
+    }
+
+    try {
+      const reponse = await fetch("/api/demande", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ parcours: path.label, reponses }),
+      })
+      if (!reponse.ok) throw new Error(String(reponse.status))
+      setSent(true)
+    } catch {
+      setEchec(
+        "L'envoi n'a pas fonctionné. Réessaie, ou écris-nous directement à " + CONTACT.email + ".",
+      )
+    } finally {
+      setEnvoiEnCours(false)
+    }
   }
 
   const reculer = () => {
@@ -117,15 +130,7 @@ export default function StartForm() {
   if (!path) {
     return (
       <div ref={card} className="mx-auto max-w-3xl text-center">
-        <Image
-          src="/brand/wordmark-3d-plain.svg"
-          alt="Woodez"
-          width={480}
-          height={144}
-          priority
-          className="mx-auto h-auto w-[min(34vw,9rem)]"
-        />
-        <h1 className="display display-3d mt-8 text-[clamp(2.2rem,6.5vw,4rem)]">
+        <h1 className="display display-3d text-[clamp(2.2rem,6.5vw,4rem)]">
           On commence par quoi ?
         </h1>
         <p className="prose-balanced mx-auto mt-5 max-w-md text-lg leading-relaxed font-medium text-ink/75">
@@ -233,11 +238,17 @@ export default function StartForm() {
 
             <button
               type="submit"
-              disabled={!valide}
+              disabled={!valide || envoiEnCours}
               className="sticker display mt-5 w-full rounded-full bg-green px-7 pt-4 pb-3.5 text-base text-cream transition-transform duration-150 enabled:hover:-translate-x-0.5 enabled:hover:-translate-y-0.5 enabled:active:translate-x-1 enabled:active:translate-y-1 enabled:active:shadow-none disabled:cursor-not-allowed disabled:opacity-40"
             >
-              {dernier ? "Envoyer ma demande" : "Continuer"}
+              {envoiEnCours ? "Envoi…" : dernier ? "Envoyer ma demande" : "Continuer"}
             </button>
+
+            {echec && (
+              <p className="prose-balanced mt-4 text-center text-sm font-bold text-coral">
+                {echec}
+              </p>
+            )}
           </form>
         )}
       </div>

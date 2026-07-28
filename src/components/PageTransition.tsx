@@ -73,8 +73,12 @@ export default function PageTransition() {
         .to(target, { scale: 0, rotate: 1080, duration: 0.5, ease: "power2.out" }, "+=0.08")
     }
 
-    document.addEventListener("click", onClick)
-    return () => document.removeEventListener("click", onClick)
+    // En phase de capture : les composants `Link` de Next posent leur propre
+    // gestionnaire et lancent la navigation avant qu'un écouteur de
+    // remontée ne soit appelé. La transition ne se jouait donc jamais depuis
+    // un `Link`, seulement depuis une balise `a` nue.
+    document.addEventListener("click", onClick, true)
+    return () => document.removeEventListener("click", onClick, true)
   }, [router])
 
   return (
