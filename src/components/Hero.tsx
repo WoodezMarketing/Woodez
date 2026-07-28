@@ -83,6 +83,18 @@ export default function Hero() {
         data-copy
         className="relative z-20 flex w-full flex-1 flex-col items-center px-4 pt-24 text-center sm:px-8 sm:pt-28"
       >
+        {/* Sur mobile, le wordmark en relief remplace la barre de navigation,
+            qui reste effacée tant qu'on est dans le hero. */}
+        <Image
+          data-fade
+          src="/brand/wordmark-3d.svg"
+          alt="Woodez"
+          width={480}
+          height={144}
+          priority
+          className="mb-7 h-auto w-[min(62vw,15rem)] sm:hidden"
+        />
+
         {/* Deux découpes distinctes : le repli automatique ne tombe pas au bon
             endroit sur petit écran, on impose donc les lignes. */}
         <h1 className="display display-3d text-[clamp(1.9rem,11.6vw,4.2rem)] leading-[0.84] sm:text-[clamp(2.4rem,5.2vw,4.2rem)]">

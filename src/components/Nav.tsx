@@ -20,17 +20,30 @@ export default function Nav() {
   useEffect(() => {
     if (!window.matchMedia("(max-width: 1023px)").matches) return
 
+    // Tant qu'on est dans le hero, la barre reste effacée : c'est le wordmark
+    // en relief posé au-dessus du titre qui tient ce rôle. Elle n'apparaît
+    // qu'une fois la scène passée, puis suit le sens du défilement.
+    const hero = document.getElementById("top")
+    const dansLeHero = () => window.scrollY < (hero?.offsetHeight ?? 0) - 140
+
     let last = window.scrollY
     const onScroll = () => {
       const y = window.scrollY
-      if (Math.abs(y - last) < 40) return // il faut un geste franc
-      const next = y > last && y > 200
-      last = y
+      const next = dansLeHero() ? true : Math.abs(y - last) < 40 ? null : y > last
+      if (Math.abs(y - last) >= 40) last = y
+      if (next === null) return
       setHidden((prev) => (prev === next ? prev : next))
     }
 
+    // Sur une frame plutôt qu'en direct : régler l'état dans le corps de
+    // l'effet déclencherait un rendu en cascade.
+    const initial = requestAnimationFrame(() => setHidden(dansLeHero()))
+
     window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
+    return () => {
+      cancelAnimationFrame(initial)
+      window.removeEventListener("scroll", onScroll)
+    }
   }, [])
 
   useEffect(() => {
