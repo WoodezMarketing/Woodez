@@ -64,9 +64,9 @@ export default function Nav() {
           href="#top"
           aria-label="Woodez, retour en haut"
           data-nav-part
-          // Même rembourrage vertical que le bouton, pour que les deux
-          // pastilles aient exactement la même épaisseur.
-          className="sticker pointer-events-auto flex items-center rounded-full bg-cream px-5 pt-4 pb-3.5"
+          // Logo plus grand, rembourrage réduit d'autant : la pastille garde
+          // exactement la même hauteur que le bouton (60 px au total).
+          className="sticker pointer-events-auto flex items-center rounded-full bg-cream px-5 pt-3 pb-2.5"
         >
           <Image
             src="/brand/logo-horizontal.svg"
@@ -74,7 +74,7 @@ export default function Nav() {
             width={140}
             height={48}
             priority
-            className="h-6 w-auto"
+            className="h-8 w-auto"
           />
         </a>
 
