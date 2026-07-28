@@ -1,57 +1,38 @@
-# Brancher le formulaire à Supabase
+# Le formulaire et sa base de données
 
-Le formulaire envoie déjà ses réponses à `/api/demande`. Il ne manque que la
-base de données pour les recevoir. Trois étapes.
+Les demandes envoyées par le formulaire sont enregistrées dans Supabase.
 
-## 1. Créer le projet
+## Ce qui est déjà en place
 
-Sur [supabase.com](https://supabase.com) : **New project**, région
-`ca-central-1` (Canada, la plus proche). Note le mot de passe de la base, tu
-n'en auras pas besoin ici mais il ne se retrouve nulle part ailleurs.
+- **Projet** : « Woodez Website », région `ca-central-1`
+  (réf. `pyvpahtysfandswhyppf`)
+- **Table** `demandes` : `id`, `cree_le`, `parcours`, `prenom`, `entreprise`,
+  `courriel`, `reponses` (le détail complet des réponses, en JSON)
+- La sécurité au niveau des lignes est activée et aucune règle n'ouvre l'accès :
+  personne ne peut lire ni écrire depuis un navigateur. Seul le serveur du site
+  insère, avec la clé de service.
+- Les clés sont dans `.env.local`, qui n'est jamais versionné.
 
-## 2. Créer la table
+Pour consulter les demandes : Supabase → **Table Editor → demandes**.
 
-Dans le projet, ouvre **SQL Editor** et colle ceci, puis **Run** :
+## Ce qu'il reste à faire
 
-```sql
-create table demandes (
-  id         bigint generated always as identity primary key,
-  cree_le    timestamptz not null default now(),
-  parcours   text        not null,
-  prenom     text,
-  entreprise text,
-  courriel   text        not null,
-  reponses   jsonb       not null
-);
+Les clés existent en local mais pas encore sur Vercel, donc le formulaire
+enregistre en développement et échoue en ligne. Dans Vercel :
 
--- Personne ne lit ni n'écrit depuis le navigateur : seul le serveur du site
--- insère, avec la clé de service qui contourne ces règles.
-alter table demandes enable row level security;
-```
-
-## 3. Donner les clés au site
-
-Dans Supabase : **Project Settings → API**. Il te faut deux valeurs :
-
-- **Project URL** (`https://xxxx.supabase.co`)
-- **service_role** — la clé secrète, celle marquée `secret`. Ne la colle nulle
-  part d'autre : elle contourne toutes les règles de sécurité.
-
-Ajoute-les à deux endroits.
-
-**En local**, dans `.env.local` à la racine du projet :
+**Settings → Environment Variables**, ajouter pour Production, Preview et
+Development :
 
 ```
-SUPABASE_URL=https://xxxx.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=la_cle_service_role
+SUPABASE_URL=https://pyvpahtysfandswhyppf.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=<la clé service_role>
 ```
 
-**Sur Vercel**, dans Settings → Environment Variables : les deux mêmes,
-pour Production, Preview et Development. Puis redéploie.
+La clé se trouve dans Supabase → **Project Settings → API → service_role**.
+Puis redéployer.
 
-## Vérifier
+## Si l'envoi échoue
 
-Remplis le formulaire sur le site. La demande doit apparaître dans
-**Table Editor → demandes**. Tant que les clés sont absentes, le formulaire
-affiche un message d'erreur avec l'adresse courriel : aucune piste n'est
-perdue entre-temps.
+Le formulaire affiche un message avec l'adresse courriel plutôt que de perdre
+la demande en silence. La cause est presque toujours une variable
+d'environnement absente ou mal copiée.
