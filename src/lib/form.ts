@@ -14,6 +14,8 @@ export type Step = {
   question: string
   /** Précision affichée sous la question. */
   hint?: string
+  /** Réponses courtes : deux colonnes plutôt qu'une pile. */
+  grille?: true
   when?: (a: Answers) => boolean
 } & (
   | { kind: "choice"; choices: { value: string; label: string }[] }
@@ -48,6 +50,7 @@ const REVENU: Step = {
   kind: "choice",
   question: "Ton chiffre d'affaires mensuel ?",
   hint: "Ça nous sert à bâtir une offre à ta taille. Une estimation suffit.",
+  grille: true,
   choices: [
     { value: "0-10k", label: "Moins de 10 000 $" },
     { value: "10-50k", label: "10 000 $ à 50 000 $" },
@@ -105,11 +108,12 @@ export const PATHS: Path[] = [
         question: "Combien de flows en place ?",
         hint: "Bienvenue, panier abandonné, post-achat, réactivation…",
         when: (a) => a.deja === "oui",
+        grille: true,
         choices: [
-          { value: "0", label: "Aucune" },
-          { value: "1-3", label: "Une à trois" },
-          { value: "4+", label: "Quatre ou plus" },
-          { value: "?", label: "Aucune idée" },
+          { value: "0", label: "Aucun" },
+          { value: "1-3", label: "1 à 3" },
+          { value: "4+", label: "4 ou plus" },
+          { value: "?", label: "Je ne sais pas" },
         ],
       },
       {
@@ -188,7 +192,7 @@ export const PATHS: Path[] = [
       {
         id: "frequence",
         kind: "choice",
-        question: "À quelle fréquence envoies-tu ?",
+        question: "Tu envoies à quelle fréquence ?",
         when: (a) => a.deja === "oui",
         choices: [
           { value: "rare", label: "Rarement, quand j'y pense" },
@@ -272,4 +276,18 @@ export const PATHS: Path[] = [
 /** Les étapes réellement posées, une fois les branches résolues. */
 export function visibleSteps(path: Path, answers: Answers) {
   return path.steps.filter((step) => !step.when || step.when(answers))
+}
+
+/**
+ * Empêche une fin de question de tomber seule sur la dernière ligne.
+ *
+ * Les deux derniers mots et la ponctuation finale sont liés par des espaces
+ * insécables : le retour à la ligne ne peut plus se faire entre eux. Ça règle
+ * d'un coup le point d'interrogation isolé et le mot orphelin.
+ */
+export function sansOrphelin(texte: string) {
+  const mots = texte.split(" ")
+  const aGarder = /^[?!:;»]$/.test(mots[mots.length - 1]) ? 3 : 2
+  if (mots.length <= aGarder) return texte.replace(/ /g, " ")
+  return [...mots.slice(0, -aGarder), mots.slice(-aGarder).join(" ")].join(" ")
 }

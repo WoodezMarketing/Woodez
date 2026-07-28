@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { CONTACT } from "@/lib/content"
-import { PATHS, visibleSteps, type Answers, type Path } from "@/lib/form"
+import { PATHS, sansOrphelin, visibleSteps, type Answers, type Path } from "@/lib/form"
 import { Sticker } from "./ui"
 
 const TONES: Record<Path["tone"], string> = {
@@ -185,7 +185,7 @@ export default function StartForm() {
 
       <div ref={card}>
         <h1 className="display display-3d text-center text-[clamp(1.9rem,5.5vw,3.25rem)]">
-          {step.question}
+          {sansOrphelin(step.question)}
         </h1>
         {step.hint && (
           <p className="prose-balanced mx-auto mt-4 max-w-md text-center text-base leading-relaxed font-medium text-ink/65">
@@ -194,7 +194,7 @@ export default function StartForm() {
         )}
 
         {step.kind === "choice" ? (
-          <div className="mt-10 grid gap-3">
+          <div className={`mt-10 grid gap-3 ${step.grille ? "sm:grid-cols-2" : ""}`}>
             {step.choices.map((choice) => (
               <button
                 key={choice.value}
