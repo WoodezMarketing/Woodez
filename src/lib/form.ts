@@ -46,7 +46,7 @@ const IDENTITE: Step[] = [
 const REVENU: Step = {
   id: "revenu",
   kind: "choice",
-  question: "Ta boutique génère environ combien par mois ?",
+  question: "Ton chiffre d'affaires mensuel ?",
   hint: "Ça nous sert à bâtir une offre à ta taille. Une estimation suffit.",
   choices: [
     { value: "0-10k", label: "Moins de 10 000 $" },
@@ -102,7 +102,7 @@ export const PATHS: Path[] = [
       {
         id: "flows",
         kind: "choice",
-        question: "Combien d'automatisations tournent en ce moment ?",
+        question: "Combien de flows en place ?",
         hint: "Bienvenue, panier abandonné, post-achat, réactivation…",
         when: (a) => a.deja === "oui",
         choices: [
@@ -214,7 +214,7 @@ export const PATHS: Path[] = [
       {
         id: "numeros",
         kind: "choice",
-        question: "Récoltes-tu déjà des numéros de téléphone ?",
+        question: "Récoltes-tu déjà des numéros ?",
         when: (a) => a.deja === "non",
         choices: [
           { value: "oui", label: "Oui, à la caisse ou par formulaire" },
