@@ -26,29 +26,17 @@ export function reveal(targets: gsap.TweenTarget, from: Vars, to: Vars, trigger:
 }
 
 /**
- * Révélation d'un titre masqué ligne par ligne.
+ * Révélation d'un titre, ligne par ligne.
  *
- * Le masque n'est utile que le temps du glissement. Une fois la ligne en
- * place, on lui rend `overflow: visible` : sinon il continue de rogner ce qui
- * dépasse du bloc de la lettre, c'est-à-dire le contour, l'ombre portée et la
- * queue des lettres comme le Q.
+ * Fondu et légère montée plutôt qu'un glissement derrière un masque : le
+ * relief déborde par nature du bloc de la lettre — contour, ombre portée,
+ * accents — et le masque le tronquait pendant toute l'animation.
  */
 export function revealLines(selector: string, trigger: Trigger) {
   return reveal(
     selector,
-    { yPercent: 110 },
-    {
-      yPercent: 0,
-      duration: 0.9,
-      stagger: 0.1,
-      ease: "expo.out",
-      onComplete() {
-        for (const node of this.targets() as HTMLElement[]) {
-          const mask = node.parentElement
-          if (mask) mask.style.overflow = "visible"
-        }
-      },
-    },
+    { y: 34, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.8, stagger: 0.09, ease: "expo.out" },
     trigger,
   )
 }

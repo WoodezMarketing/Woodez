@@ -119,21 +119,12 @@
     color: transparent;
   }
 
-  /* Masque de révélation ligne par ligne. Le rembourrage laisse passer les
-     accents (É, À) que le masque coupait, et la marge négative annule son
-     effet sur la mise en page. */
-  .line-mask {
+  /* Une ligne de titre. Elle ne masque plus rien : le relief déborde par
+     nature du bloc de la lettre — contour, ombre portée, accents — et tout
+     rognage le coupait pendant l'animation. Les titres se révèlent donc par
+     fondu et montée, sans jamais rien tronquer. */
+  .reveal-line {
     display: block;
-    overflow: hidden;
-    /* Le contour et l'ombre portée débordent du bloc de la lettre : sans ce
-       rembourrage, le masque leur coupe le haut, le bas et la droite. Les
-       marges négatives annulent son effet sur la mise en page. */
-    padding-top: 0.24em;
-    margin-top: -0.24em;
-    padding-bottom: 0.36em;
-    margin-bottom: -0.28em;
-    padding-right: 0.16em;
-    margin-right: -0.16em;
   }
 
   /* Le trait épais du langage sticker de la marque */

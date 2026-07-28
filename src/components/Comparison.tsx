@@ -28,7 +28,7 @@ export default function Comparison() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      revealLines("[data-heading] .line-mask > span", { trigger: el, start: "top 70%" })
+      revealLines("[data-heading] .reveal-line > span", { trigger: el, start: "top 70%" })
 
       reveal(
         "[data-row]",
@@ -66,16 +66,16 @@ export default function Comparison() {
             data-heading
             className="display display-3d mt-6 flex flex-nowrap items-center justify-center gap-x-2 text-[clamp(2.4rem,6vw,4.5rem)] sm:gap-x-3"
           >
-            <span className="line-mask">
+            <span className="reveal-line">
               <span className="block text-green">{content.comparison.title[0]}</span>
             </span>
 
             {/* Simple mot en relief comme le reste du titre, mais en jaune. */}
-            <span data-vs className="line-mask shrink-0 text-lemon">
+            <span data-vs className="reveal-line shrink-0 text-lemon">
               <span className="block">vs</span>
             </span>
 
-            <span className="line-mask">
+            <span className="reveal-line">
               <span className="block">{content.comparison.title[1]}</span>
             </span>
           </h2>

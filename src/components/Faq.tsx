@@ -53,12 +53,12 @@ export default function Faq() {
       <div className="mx-auto max-w-[1200px]">
         {/* Titre centré, second mot dans une pastille de travers */}
         <h2 data-faq-heading className="display display-3d text-center text-[clamp(2.9rem,6vw,4.5rem)]">
-          <span className="line-mask">
+          <span className="reveal-line">
             <span className="block">{line1}</span>
           </span>
           {/* Remontée : le rembourrage du masque et celui de la pastille
               s'additionnaient et creusaient un trou entre les deux lignes. */}
-          <span className="line-mask -mt-9 sm:-mt-12">
+          <span className="reveal-line -mt-9 sm:-mt-12">
             <span className="block">
               <span
                 data-faq-badge

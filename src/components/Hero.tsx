@@ -20,18 +20,8 @@ export default function Hero() {
 
     const ctx = gsap.context(() => {
       gsap
-        .timeline({
-          defaults: { ease: "power3.out" },
-          // Le masque n'est utile que le temps du glissement. S'il reste actif,
-          // il continue de rogner ce qui déborde du bloc de la lettre : le
-          // contour, l'ombre portée et les accents.
-          onComplete: () => {
-            el.querySelectorAll<HTMLElement>(".line-mask").forEach((mask) => {
-              mask.style.overflow = "visible"
-            })
-          },
-        })
-        .from("[data-line] > span", { yPercent: 115, duration: 0.9, stagger: 0.12 })
+        .timeline({ defaults: { ease: "power3.out" } })
+        .from("[data-line] > span", { y: 34, opacity: 0, duration: 0.8, stagger: 0.1 })
         .from("[data-fade]", { y: 20, opacity: 0, duration: 0.6, stagger: 0.12 }, "-=0.4")
         .from("[data-scene]", { y: 50, opacity: 0, duration: 1, ease: "power2.out" }, "-=1")
 
@@ -100,7 +90,7 @@ export default function Hero() {
         <h1 className="display display-3d text-[clamp(1.9rem,11.6vw,4.2rem)] leading-[0.84] sm:text-[clamp(2.4rem,5.2vw,4.2rem)]">
           <span className="block sm:hidden">
             {content.hero.titleMobile.map((line) => (
-              <span key={line} data-line className="line-mask">
+              <span key={line} data-line className="reveal-line">
                 <span className="block">{line}</span>
               </span>
             ))}
@@ -108,7 +98,7 @@ export default function Hero() {
 
           <span className="hidden sm:block">
             {content.hero.title.map((line) => (
-              <span key={line} data-line className="line-mask">
+              <span key={line} data-line className="reveal-line">
                 <span className="block">{line}</span>
               </span>
             ))}
