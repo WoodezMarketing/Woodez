@@ -87,7 +87,7 @@ export default function Hero() {
             qui reste effacée tant qu'on est dans le hero. */}
         <Image
           data-fade
-          src="/brand/wordmark-3d.svg"
+          src="/brand/wordmark-3d-plain.svg"
           alt="Woodez"
           width={480}
           height={144}
