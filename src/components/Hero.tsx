@@ -69,9 +69,14 @@ export default function Hero() {
         />
       </div>
 
+      {/* Sur grand écran, la hauteur de ce bloc fixe le haut de l'illustration.
+          À pleine largeur la scène mesure 42.4 vw de haut (ratio 2.357) ; en
+          réservant `100svh - 35.6vw`, elle se pose exactement là où elle était
+          quand elle était rognée, et la section s'allonge de la part qui
+          dépassait, ce qui repousse le bandeau d'autant. */}
       <div
         data-copy
-        className="relative z-20 flex w-full flex-1 flex-col items-center px-4 pt-24 text-center sm:px-8 sm:pt-28"
+        className="relative z-20 flex w-full flex-1 flex-col items-center px-4 pt-24 text-center sm:px-8 sm:pt-28 lg:min-h-[calc(100svh-35.6vw)]"
       >
         {/* Deux découpes distinctes : le repli automatique ne tombe pas au bon
             endroit sur petit écran, on impose donc les lignes. */}
@@ -121,8 +126,8 @@ export default function Hero() {
           width={3840}
           height={1629}
           priority
-          sizes="(max-width: 640px) 190vw, (max-width: 1024px) 130vw, 100vw"
-          className="block w-[190%] max-w-none sm:w-[130%] lg:w-full"
+          sizes="(max-width: 640px) 210vw, (max-width: 1024px) 140vw, 100vw"
+          className="block w-[210%] max-w-none sm:w-[140%] lg:w-full"
         />
       </div>
 
