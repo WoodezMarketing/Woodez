@@ -20,7 +20,17 @@ export default function Hero() {
 
     const ctx = gsap.context(() => {
       gsap
-        .timeline({ defaults: { ease: "power3.out" } })
+        .timeline({
+          defaults: { ease: "power3.out" },
+          // Le masque n'est utile que le temps du glissement. S'il reste actif,
+          // il continue de rogner ce qui déborde du bloc de la lettre : le
+          // contour, l'ombre portée et les accents.
+          onComplete: () => {
+            el.querySelectorAll<HTMLElement>(".line-mask").forEach((mask) => {
+              mask.style.overflow = "visible"
+            })
+          },
+        })
         .from("[data-line] > span", { yPercent: 115, duration: 0.9, stagger: 0.12 })
         .from("[data-fade]", { y: 20, opacity: 0, duration: 0.6, stagger: 0.12 }, "-=0.4")
         .from("[data-scene]", { y: 50, opacity: 0, duration: 1, ease: "power2.out" }, "-=1")
@@ -117,7 +127,7 @@ export default function Hero() {
           flottaison, sans venir toucher le bouton. */}
       <div
         data-scene
-        className="pointer-events-none relative z-10 mt-auto flex w-full justify-center lg:-mt-[7vw]"
+        className="pointer-events-none relative z-10 mt-auto flex w-full justify-center lg:-mt-[4.5vw]"
       >
         <Image
           src="/hero/scene-v3.png"
@@ -130,16 +140,6 @@ export default function Hero() {
         />
       </div>
 
-      <a
-        href="#services"
-        data-fade
-        className="absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-1.5 text-[0.65rem] font-bold tracking-[0.2em] text-cream uppercase xl:flex"
-      >
-        {content.hero.scroll}
-        <span className="sticker flex size-9 items-center justify-center rounded-full bg-cream text-ink">
-          <span className="animate-bounce text-sm leading-none">↓</span>
-        </span>
-      </a>
     </section>
   )
 }

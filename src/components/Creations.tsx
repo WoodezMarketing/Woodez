@@ -70,7 +70,10 @@ export default function Creations() {
     // Section volontairement longue : le texte reste collé au centre de l'écran
     // pendant que les créations défilent derrière lui.
     <section ref={root} id="creations" className="relative h-[190svh] bg-ink">
-      <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden">
+      {/* `lvh` et non `svh` : `svh` est la hauteur d'écran barre du navigateur
+          visible. Dès que cette barre se rétracte au défilement, l'écran
+          s'agrandit et une bande du mur restait découverte en bas. */}
+      <div className="sticky top-0 flex h-[100lvh] items-center justify-center overflow-hidden">
         {/* Mur de créations, très atténué pour ne jamais gêner la lecture */}
         <div
           aria-hidden

@@ -89,7 +89,7 @@ export default function Reveal() {
       {/* Sur mobile la taille suit la largeur d'écran : la phrase se déploie
           alors sur une douzaine de lignes et occupe toute la hauteur de la
           section, au lieu de flotter au milieu sur six lignes. */}
-      <p className="display relative mx-auto max-w-5xl text-center text-[clamp(2rem,8.5vw,3rem)] leading-[1.14] sm:text-[clamp(1.65rem,3.6vw,3rem)] sm:leading-[1.18]">
+      <p className="display relative mx-auto max-w-5xl text-center text-[clamp(2.3rem,10.2vw,3rem)] leading-[1.12] sm:text-[clamp(1.65rem,3.6vw,3rem)] sm:leading-[1.18]">
         {words.map((word, i) => (
           <span key={`${word}-${i}`} data-word className="wipe">
             {word}

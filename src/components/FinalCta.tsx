@@ -59,14 +59,19 @@ export default function FinalCta() {
       {/* Ligne de collines. Le bas de l'image est un vert uni, repris à
           l'identique par le bloc en dessous : le raccord est invisible et le
           contenu a l'air posé sur le gazon. */}
-      <Image
-        src="/footer/montagnes-dodo-v2.png"
-        alt=""
-        aria-hidden
-        width={3840}
-        height={944}
-        className="block w-full"
-      />
+      {/* Agrandie sur mobile : à pleine largeur la sieste de Woodez se réduit
+          à une vignette illisible. */}
+      <div className="flex justify-center overflow-hidden">
+        <Image
+          src="/footer/montagnes-dodo-v2.png"
+          alt=""
+          aria-hidden
+          width={3840}
+          height={944}
+          sizes="(max-width: 640px) 190vw, 100vw"
+          className="block w-[190%] max-w-none sm:w-full"
+        />
+      </div>
 
       {/* `overflow-hidden` retient les stickers du fond, mais il rasait aussi
           le haut des lettres du titre : avec un interligne serré, les

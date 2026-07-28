@@ -28,8 +28,7 @@ export const content = {
     kicker:
       "Le email et SMS marketing conçu pour fidéliser, automatiser et faire grandir ton commerce.",
     cta: "Commencer maintenant",
-    scroll: "Défiler",
-  },
+      },
 
   marquee: ["Email marketing", "SMS", "Klaviyo", "Design sur mesure", "Automatisations", "Rétention"],
 

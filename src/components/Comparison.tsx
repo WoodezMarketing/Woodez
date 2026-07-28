@@ -28,14 +28,7 @@ export default function Comparison() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      revealLines("[data-heading] > span > span", { trigger: el, start: "top 70%" })
-
-      reveal(
-        "[data-vs]",
-        { scale: 0, rotate: -180 },
-        { scale: 1, rotate: 0, duration: 0.8, ease: "back.out(2.6)", delay: 0.25 },
-        { trigger: el, start: "top 70%" },
-      )
+      revealLines("[data-heading] .line-mask > span", { trigger: el, start: "top 70%" })
 
       reveal(
         "[data-row]",
@@ -77,17 +70,9 @@ export default function Comparison() {
               <span className="block text-green">{content.comparison.title[0]}</span>
             </span>
 
-            {/* Taille fixe plutôt que relative au titre : en `em` la pastille
-                devenait un point minuscule et le mot dedans, une tache. Elle
-                est légèrement remontée : les majuscules du titre n'ont pas de
-                jambage, leur milieu optique est plus haut que le milieu de la
-                ligne. */}
-            <span
-              data-vs
-              className="sticker -mt-[0.12em] flex size-12 shrink-0 items-center justify-center rounded-full bg-cream text-base text-ink sm:size-16 sm:text-xl"
-              style={{ WebkitTextStroke: "0", textShadow: "none" }}
-            >
-              VS
+            {/* Simple mot en relief comme le reste du titre, mais en jaune. */}
+            <span data-vs className="line-mask shrink-0 text-lemon">
+              <span className="block">vs</span>
             </span>
 
             <span className="line-mask">

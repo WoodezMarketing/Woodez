@@ -17,9 +17,10 @@ const STUCK = [
 ] as const
 
 const SOCIALS = [
-  { label: "Instagram", href: "https://instagram.com" },
-  { label: "LinkedIn", href: "https://linkedin.com" },
-  { label: "TikTok", href: "https://tiktok.com" },
+  { label: "Instagram", href: "https://www.instagram.com/woodez.ca/" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/108960069" },
+  { label: "Pinterest", href: "https://ca.pinterest.com/woodez_marketing" },
+  { label: "TikTok", href: "https://www.tiktok.com/@woodez_" },
 ]
 
 export default function Footer() {
@@ -59,7 +60,7 @@ export default function Footer() {
       <div className="overflow-hidden rounded-[2.5rem] border-4 border-ink bg-cream">
         <div className="grid gap-10 p-8 sm:p-12 lg:grid-cols-3 lg:gap-8">
           <div>
-            <span className="sticker inline-block rounded-full bg-green px-3 py-1 text-xs font-bold tracking-[0.12em] text-cream uppercase">
+            <span className="sticker inline-block rounded-full bg-cream px-3 py-1 text-xs font-bold tracking-[0.12em] uppercase">
               Écris-nous
             </span>
             <a
@@ -79,8 +80,8 @@ export default function Footer() {
           </div>
 
           <div>
-            <span className="sticker inline-block rounded-full bg-green px-3 py-1 text-xs font-bold tracking-[0.12em] text-cream uppercase">
-              Au téléphone
+            <span className="sticker inline-block rounded-full bg-cream px-3 py-1 text-xs font-bold tracking-[0.12em] uppercase">
+              WhatsApp
             </span>
             <a
               href={CONTACT.phoneHref}
@@ -91,7 +92,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <span className="sticker inline-block rounded-full bg-green px-3 py-1 text-xs font-bold tracking-[0.12em] text-cream uppercase">
+            <span className="sticker inline-block rounded-full bg-cream px-3 py-1 text-xs font-bold tracking-[0.12em] uppercase">
               Nous suivre
             </span>
             <ul className="mt-4 flex flex-wrap gap-2">
@@ -101,7 +102,7 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="sticker inline-block rounded-full bg-mint px-4 py-2 text-sm font-bold transition-transform duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-none"
+                    className="sticker inline-block rounded-full bg-green px-4 py-2 text-sm font-bold text-cream transition-transform duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-none"
                   >
                     {social.label}
                   </a>
