@@ -92,7 +92,7 @@ export default function Nav() {
         </a>
 
         <span data-nav-part className="pointer-events-auto">
-          <Button href="#contact" tone="green">
+          <Button href="/commencer" data-transition tone="green">
             {/* Libellé court sur mobile : la barre doit rester légère. */}
             <span className="sm:hidden">{content.nav.ctaShort}</span>
             <span className="hidden sm:inline">{content.nav.cta}</span>

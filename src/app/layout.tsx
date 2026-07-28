@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import SmoothScroll from "@/components/SmoothScroll"
+import PageTransition from "@/components/PageTransition"
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="fr-CA" className={inter.variable}>
       <body>
         <SmoothScroll />
+        <PageTransition />
         {children}
       </body>
     </html>

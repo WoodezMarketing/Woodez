@@ -123,7 +123,7 @@ export default function Hero() {
         </p>
 
         <div data-fade className="mt-6">
-          <Button href="#contact" tone="cream" className="text-lg">
+          <Button href="/commencer" data-transition tone="cream" className="text-lg">
             {content.hero.cta}
           </Button>
         </div>
