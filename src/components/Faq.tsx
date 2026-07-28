@@ -56,9 +56,10 @@ export default function Faq() {
           <span className="reveal-line">
             <span className="block">{line1}</span>
           </span>
-          {/* Remontée : le rembourrage du masque et celui de la pastille
-              s'additionnaient et creusaient un trou entre les deux lignes. */}
-          <span className="reveal-line -mt-9 sm:-mt-12">
+          {/* Léger rapprochement seulement : la remontée franche datait du
+              temps où le masque de révélation ajoutait son propre
+              rembourrage. Sans lui, les deux lignes se collaient. */}
+          <span className="reveal-line mt-1 sm:mt-2">
             <span className="block">
               <span
                 data-faq-badge
