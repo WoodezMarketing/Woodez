@@ -10,10 +10,11 @@ export const metadata: Metadata = {
 
 export default function Commencer() {
   return (
-    // Hauteur d'écran exacte : la page elle-même ne défile jamais. Si les
-    // questions dépassent sur un petit écran, c'est la zone du formulaire qui
-    // défile, pas la page — la ligne de collines reste donc toujours en place.
-    <main className="relative isolate flex h-[100svh] flex-col overflow-hidden bg-scene-sky">
+    // Sur grand écran la page est figée à la hauteur de l'écran et ne défile
+    // pas. Sur mobile elle défile normalement : le contenu y dépasse presque
+    // toujours, et une zone à défilement interne rendait le bas des questions
+    // inatteignable.
+    <main className="relative isolate flex min-h-[100svh] flex-col bg-scene-sky lg:h-[100svh] lg:overflow-hidden">
       <header className="relative z-20 shrink-0 px-4 py-4 sm:px-6">
         <Link
           href="/"
@@ -48,7 +49,7 @@ export default function Commencer() {
           un enfant centré dans un conteneur qui défile voit son haut devenir
           inatteignable. Là, il se centre quand il tient et se cale en haut
           quand il déborde. */}
-      <div className="relative z-10 flex min-h-0 flex-1 items-start overflow-y-auto px-4 py-6 sm:px-6 sm:py-10">
+      <div className="relative z-10 flex flex-1 items-start px-4 py-8 sm:px-6 lg:min-h-0 lg:overflow-y-auto lg:py-10">
         <div className="my-auto w-full">
           <StartForm />
         </div>
@@ -57,7 +58,7 @@ export default function Commencer() {
       {/* Ligne de collines : on reste dans le même monde que le site. Sa
           hauteur est plafonnée et l'image recadrée par le haut, sinon elle
           mangeait un tiers de l'écran sur un téléphone. */}
-      <div className="relative z-0 max-h-[22svh] shrink-0 overflow-hidden">
+      <div className="relative z-0 max-h-[18svh] shrink-0 overflow-hidden lg:max-h-[22svh]">
         <Image
           src="/footer/montagnes-dodo-v2.png"
           alt=""
