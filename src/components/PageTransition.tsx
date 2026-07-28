@@ -17,6 +17,9 @@ import { gsap } from "gsap"
  * que d'exposer un contexte : n'importe quel lien du site peut en profiter en
  * ajoutant l'attribut.
  */
+/** Taille de rendu de la tête, avant agrandissement. */
+const BASE = 1200
+
 export default function PageTransition() {
   const router = useRouter()
   const wrap = useRef<HTMLDivElement>(null)
@@ -49,10 +52,12 @@ export default function PageTransition() {
         return
       }
 
-      // Le disque part d'un diamètre fixe ; on calcule l'agrandissement à
-      // partir de la diagonale pour qu'il couvre l'écran quel qu'il soit.
+      // C'est la tête elle-même qui doit couvrir l'écran, sans disque derrière.
+      // Seul son centre est plein — les oreilles laissent passer les coins —
+      // donc on grossit bien au-delà de la diagonale pour que la fenêtre
+      // tienne entièrement dans la partie opaque.
       const diagonale = Math.hypot(window.innerWidth, window.innerHeight)
-      const plein = (diagonale / 240) * 1.15
+      const plein = (diagonale / BASE) * 2.4
 
       gsap.set(overlay, { display: "block" })
       gsap
@@ -79,18 +84,11 @@ export default function PageTransition() {
       className="pointer-events-none fixed inset-0 z-[100] hidden overflow-hidden"
     >
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        {/* Le disque vert garantit la couverture ; la mascotte tourne dessus. */}
-        <div
-          ref={disc}
-          className="flex size-60 items-center justify-center rounded-full bg-green will-change-transform"
-        >
-          <Image
-            src="/brand/mascot.svg"
-            alt=""
-            width={240}
-            height={240}
-            className="w-[62%] drop-shadow-[0_6px_0_rgba(20,23,21,0.25)]"
-          />
+        {/* Base large et non 240 px : le navigateur rastérise le calque à sa
+            taille de départ, puis se contente d'étirer le bitmap. Partir petit
+            donnait une tête franchement floue au sommet de l'animation. */}
+        <div ref={disc} style={{ width: BASE, height: BASE }}>
+          <Image src="/brand/mascot.svg" alt="" width={BASE} height={BASE} className="w-full" />
         </div>
       </div>
     </div>
