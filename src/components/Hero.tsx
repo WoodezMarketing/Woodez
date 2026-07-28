@@ -25,10 +25,10 @@ export default function Hero() {
         .from("[data-fade]", { y: 20, opacity: 0, duration: 0.6, stagger: 0.12 }, "-=0.4")
         .from("[data-scene]", { y: 50, opacity: 0, duration: 1, ease: "power2.out" }, "-=1")
 
-      // Le décor traîne derrière le texte au défilement : c'est ce décalage de
-      // vitesse qui creuse la profondeur.
+      // Le ciel et le texte traînent derrière au défilement, ce qui creuse la
+      // profondeur. La scène, elle, ne bouge plus : elle est désormais dans le
+      // flux et tout déplacement la ferait sortir de son emplacement.
       const scrub = { trigger: el, start: "top top", end: "bottom top", scrub: true } as const
-      gsap.to("[data-scene]", { yPercent: 12, ease: "none", scrollTrigger: scrub })
       gsap.to("[data-sky]", { yPercent: 26, ease: "none", scrollTrigger: scrub })
       gsap.to("[data-copy]", { yPercent: -30, opacity: 0.1, ease: "none", scrollTrigger: scrub })
     }, el)
@@ -107,13 +107,13 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* La scène, elle, est fixe. Agrandie sur mobile, sinon les personnages
-          se réduisent à une frise illisible. */}
+      {/* La scène est dans le flux, plus posée en absolu au ras du bas : la
+          section s'allonge donc pour la contenir en entier. On voit le bas de
+          l'illustration en défilant au lieu de la voir coupée aux pattes de
+          Woodez par le bandeau qui suit. */}
       <div
         data-scene
-        // Décalée vers le bas pour que la tête de Woodez passe sous le bouton.
-        // On ne perd que de l'herbe uniforme en bas de l'image.
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex translate-y-[27%] justify-center sm:translate-y-[6%] lg:translate-y-[16%]"
+        className="pointer-events-none relative z-10 mt-auto flex w-full justify-center"
       >
         <Image
           src="/hero/scene-v3.png"
@@ -121,8 +121,8 @@ export default function Hero() {
           width={3840}
           height={1629}
           priority
-          sizes="(max-width: 640px) 210vw, (max-width: 1024px) 140vw, 100vw"
-          className="w-[210%] max-w-none sm:w-[140%] lg:w-full"
+          sizes="(max-width: 640px) 190vw, (max-width: 1024px) 130vw, 100vw"
+          className="block w-[190%] max-w-none sm:w-[130%] lg:w-full"
         />
       </div>
 
