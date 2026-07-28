@@ -69,14 +69,9 @@ export default function Hero() {
         />
       </div>
 
-      {/* Sur grand écran, la hauteur de ce bloc fixe le haut de l'illustration.
-          À pleine largeur la scène mesure 42.4 vw de haut (ratio 2.357) ; en
-          réservant `100svh - 35.6vw`, elle se pose exactement là où elle était
-          quand elle était rognée, et la section s'allonge de la part qui
-          dépassait, ce qui repousse le bandeau d'autant. */}
       <div
         data-copy
-        className="relative z-20 flex w-full flex-1 flex-col items-center px-4 pt-24 text-center sm:px-8 sm:pt-28 lg:min-h-[calc(100svh-35.6vw)]"
+        className="relative z-20 flex w-full flex-1 flex-col items-center px-4 pt-24 text-center sm:px-8 sm:pt-28"
       >
         {/* Deux découpes distinctes : le repli automatique ne tombe pas au bon
             endroit sur petit écran, on impose donc les lignes. */}
@@ -116,9 +111,13 @@ export default function Hero() {
           section s'allonge donc pour la contenir en entier. On voit le bas de
           l'illustration en défilant au lieu de la voir coupée aux pattes de
           Woodez par le bandeau qui suit. */}
+      {/* Marge négative sur grand écran : le haut de l'illustration n'est que
+          du ciel, identique au fond de section. La remonter ne masque donc
+          rien et fait gagner autant de personnages au-dessus de la ligne de
+          flottaison, sans venir toucher le bouton. */}
       <div
         data-scene
-        className="pointer-events-none relative z-10 mt-auto flex w-full justify-center"
+        className="pointer-events-none relative z-10 mt-auto flex w-full justify-center lg:-mt-[7vw]"
       >
         <Image
           src="/hero/scene-v3.png"
