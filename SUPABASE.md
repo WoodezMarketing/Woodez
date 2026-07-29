@@ -15,21 +15,17 @@ Les demandes envoyées par le formulaire sont enregistrées dans Supabase.
 
 Pour consulter les demandes : Supabase → **Table Editor → demandes**.
 
-## Ce qu'il reste à faire
+Les deux variables `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY` sont posées
+sur Vercel pour Production, Preview et Development. L'enregistrement est
+vérifié en ligne.
 
-Les clés existent en local mais pas encore sur Vercel, donc le formulaire
-enregistre en développement et échoue en ligne. Dans Vercel :
+## Si tu changes la clé
 
-**Settings → Environment Variables**, ajouter pour Production, Preview et
-Development :
+Elle vit à deux endroits, et il faut la mettre à jour aux deux :
 
-```
-SUPABASE_URL=https://pyvpahtysfandswhyppf.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=<la clé service_role>
-```
-
-La clé se trouve dans Supabase → **Project Settings → API → service_role**.
-Puis redéployer.
+- `.env.local` à la racine du projet, pour le développement
+- Vercel → **Settings → Environment Variables**, puis redéployer : les
+  variables ne s'appliquent qu'au déploiement suivant
 
 ## Si l'envoi échoue
 
