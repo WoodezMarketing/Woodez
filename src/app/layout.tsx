@@ -22,7 +22,9 @@ export const metadata: Metadata = {
     locale: "fr_CA",
     type: "website",
   },
-  icons: { icon: "/brand/mascot.svg" },
+  // Déclinaison à contour clair : sur un onglet sombre, la version sans
+  // contour se confond avec le fond.
+  icons: { icon: "/brand/mascot-stroke.svg" },
 }
 
 export default function RootLayout({
