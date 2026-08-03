@@ -32,3 +32,31 @@ Elle vit à deux endroits, et il faut la mettre à jour aux deux :
 Le formulaire affiche un message avec l'adresse courriel plutôt que de perdre
 la demande en silence. La cause est presque toujours une variable
 d'environnement absente ou mal copiée.
+
+## La notification par courriel
+
+À chaque demande, le serveur envoie un courriel récapitulatif à `info@woodez.ca`,
+mis en page aux couleurs de la marque, avec un bouton **Répondre** qui écrit
+directement au visiteur. L'enregistrement en base fait foi : si le courriel
+échoue, la demande est quand même sauvée et le visiteur voit un succès.
+
+L'envoi passe par [Resend](https://resend.com). Il faut trois variables :
+
+```
+RESEND_API_KEY=re_xxxxxxxx
+COURRIEL_DESTINATAIRE=info@woodez.ca
+COURRIEL_EXPEDITEUR=Woodez <bonjour@woodez.ca>
+```
+
+Sans `RESEND_API_KEY`, l'envoi est simplement sauté — rien ne casse.
+
+### Mettre ça en place
+
+1. Créer un compte sur [resend.com](https://resend.com) (gratuit jusqu'à
+   3 000 courriels par mois).
+2. **Domains → Add Domain** : `woodez.ca`. Resend donne trois enregistrements
+   DNS à ajouter chez ton registraire. Sans cette étape, les courriels ne
+   peuvent partir que d'une adresse de test et n'arrivent qu'à toi.
+3. **API Keys → Create API Key**, portée *Sending access*.
+4. Ajouter les trois variables dans `.env.local` et dans Vercel
+   (Settings → Environment Variables), puis redéployer.

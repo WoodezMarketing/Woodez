@@ -69,20 +69,23 @@ export default function StartForm() {
     setEnvoiEnCours(true)
     setEchec(null)
 
-    // On envoie aussi les questions en clair : le libellé du choix est plus
-    // lisible qu'un code dans la base, et les questions peuvent évoluer.
+    // Deux formes du même contenu : `reponses` va dans la base, `detail` sert
+    // au courriel, où l'ordre des questions compte autant que les réponses.
     const reponses: Answers = {}
+    const detail: { question: string; reponse: string }[] = []
     for (const s of visibleSteps(path, finales)) {
       const brut = finales[s.id] ?? ""
-      reponses[s.id] =
+      const lisible =
         s.kind === "choice" ? (s.choices.find((c) => c.value === brut)?.label ?? brut) : brut
+      reponses[s.id] = lisible
+      detail.push({ question: s.question, reponse: lisible })
     }
 
     try {
       const reponse = await fetch("/api/demande", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ parcours: path.label, reponses }),
+        body: JSON.stringify({ parcours: path.label, reponses, detail }),
       })
       if (!reponse.ok) throw new Error(String(reponse.status))
       setSent(true)
@@ -109,7 +112,7 @@ export default function StartForm() {
   if (sent) {
     return (
       <div ref={card} className="mx-auto max-w-xl text-center">
-        <Sticker name="heart" size={110} className="mx-auto" />
+        <Sticker name="paper-plane" size={120} className="mx-auto" />
         <h1 className="display display-3d mt-8 text-[clamp(2.4rem,7vw,4rem)]">C&apos;est parti&nbsp;!</h1>
         <p className="prose-balanced mx-auto mt-6 max-w-md text-lg leading-relaxed font-medium text-ink/75">
           Ta demande est en route. On regarde ça et on te revient en moins de 24 heures ouvrables.

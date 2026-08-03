@@ -10,11 +10,12 @@ export const metadata: Metadata = {
 
 export default function Commencer() {
   return (
-    // Sur grand écran la page est figée à la hauteur de l'écran et ne défile
-    // pas. Sur mobile elle défile normalement : le contenu y dépasse presque
-    // toujours, et une zone à défilement interne rendait le bas des questions
-    // inatteignable.
-    <main className="relative isolate flex min-h-[100svh] flex-col bg-scene-sky lg:h-[100svh] lg:overflow-hidden">
+    // La page occupe au moins la hauteur de l'écran et s'allonge si le
+    // contenu déborde. Une zone à défilement interne cachait le dernier choix
+    // sur les écrans peu hauts : rien ne signalait qu'il fallait défiler
+    // dedans, et la ligne de collines juste dessous donnait l'impression d'une
+    // coupure.
+    <main className="relative isolate flex min-h-[100svh] flex-col bg-scene-sky">
       <header className="relative z-20 shrink-0 px-4 py-4 sm:px-6">
         <Link
           href="/"
@@ -49,7 +50,7 @@ export default function Commencer() {
           un enfant centré dans un conteneur qui défile voit son haut devenir
           inatteignable. Là, il se centre quand il tient et se cale en haut
           quand il déborde. */}
-      <div className="relative z-10 flex flex-1 items-start px-4 py-8 sm:px-6 lg:min-h-0 lg:overflow-y-auto lg:py-10">
+      <div className="relative z-10 flex flex-1 items-start px-4 py-8 sm:px-6 lg:py-10">
         <div className="my-auto w-full">
           <StartForm />
         </div>
