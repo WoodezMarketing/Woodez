@@ -1,0 +1,123 @@
+[
+    {
+        "data": "23.227.38.32",
+        "name": "@",
+        "ttl": 3600,
+        "type": "A"
+    },
+    {
+        "data": "185.158.133.1",
+        "name": "emailcalcul",
+        "ttl": 3600,
+        "type": "A"
+    },
+    {
+        "data": "ns53.domaincontrol.com",
+        "name": "@",
+        "ttl": 3600,
+        "type": "NS"
+    },
+    {
+        "data": "ns54.domaincontrol.com",
+        "name": "@",
+        "ttl": 3600,
+        "type": "NS"
+    },
+    {
+        "data": "ns1.klaviyo.com",
+        "name": "send",
+        "ttl": 3600,
+        "type": "NS"
+    },
+    {
+        "data": "ns2.klaviyo.com",
+        "name": "send",
+        "ttl": 3600,
+        "type": "NS"
+    },
+    {
+        "data": "ns3.klaviyo.com",
+        "name": "send",
+        "ttl": 3600,
+        "type": "NS"
+    },
+    {
+        "data": "ns4.klaviyo.com",
+        "name": "send",
+        "ttl": 3600,
+        "type": "NS"
+    },
+    {
+        "data": "dns-verification.shopify.com",
+        "name": "0b1d3953-6939-4f9c-8c18-e5faf4457167",
+        "ttl": 3600,
+        "type": "CNAME"
+    },
+    {
+        "data": "shops.myshopify.com",
+        "name": "account",
+        "ttl": 3600,
+        "type": "CNAME"
+    },
+    {
+        "data": "u161779.wl030.sendgrid.net",
+        "name": "email",
+        "ttl": 3600,
+        "type": "CNAME"
+    },
+    {
+        "data": "kl.domainkey.u161779.wl030.sendgrid.net",
+        "name": "kl._domainkey",
+        "ttl": 3600,
+        "type": "CNAME"
+    },
+    {
+        "data": "kl2.domainkey.u161779.wl030.sendgrid.net",
+        "name": "kl2._domainkey",
+        "ttl": 3600,
+        "type": "CNAME"
+    },
+    {
+        "data": "shops.myshopify.com",
+        "name": "www",
+        "ttl": 3600,
+        "type": "CNAME"
+    },
+    {
+        "data": "smtp.google.com",
+        "name": "@",
+        "priority": 1,
+        "ttl": 3600,
+        "type": "MX"
+    },
+    {
+        "data": "google-site-verification=8dKwx1O3SCM7ctlxumyL9y5h5TvAV09-CZn9MMnuoPU",
+        "name": "@",
+        "ttl": 3600,
+        "type": "TXT"
+    },
+    {
+        "data": "klaviyo-site-verification=RykXGY",
+        "name": "@",
+        "ttl": 3600,
+        "type": "TXT"
+    },
+    {
+        "data": "proxy-ssl.webflow.com",
+        "name": "@",
+        "ttl": 3600,
+        "type": "TXT"
+    },
+    {
+        "data": "v=DMARC1; p=none",
+        "name": "_dmarc",
+        "ttl": 3600,
+        "type": "TXT"
+    },
+    {
+        "data": "one-time-verification=dd6da3fc-3b45-4bcb-a498-c55fca83a333",
+        "name": "_webflow",
+        "ttl": 600,
+        "type": "TXT"
+    }
+]
