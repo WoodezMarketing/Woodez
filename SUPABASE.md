@@ -40,23 +40,25 @@ mis en page aux couleurs de la marque, avec un bouton **Répondre** qui écrit
 directement au visiteur. L'enregistrement en base fait foi : si le courriel
 échoue, la demande est quand même sauvée et le visiteur voit un succès.
 
-L'envoi passe par [Resend](https://resend.com). Il faut trois variables :
+L'envoi passe par [Resend](https://resend.com) et est déjà en place, en local
+comme sur Vercel. Trois variables le pilotent :
 
 ```
-RESEND_API_KEY=re_xxxxxxxx
+RESEND_API_KEY
 COURRIEL_DESTINATAIRE=info@woodez.ca
-COURRIEL_EXPEDITEUR=Woodez <bonjour@woodez.ca>
+COURRIEL_EXPEDITEUR=Woodez <notifications@tryswind.com>
 ```
 
 Sans `RESEND_API_KEY`, l'envoi est simplement sauté — rien ne casse.
 
-### Mettre ça en place
+### Pourquoi l'expéditeur est sur tryswind.com
 
-1. Créer un compte sur [resend.com](https://resend.com) (gratuit jusqu'à
-   3 000 courriels par mois).
-2. **Domains → Add Domain** : `woodez.ca`. Resend donne trois enregistrements
-   DNS à ajouter chez ton registraire. Sans cette étape, les courriels ne
-   peuvent partir que d'une adresse de test et n'arrivent qu'à toi.
-3. **API Keys → Create API Key**, portée *Sending access*.
-4. Ajouter les trois variables dans `.env.local` et dans Vercel
-   (Settings → Environment Variables), puis redéployer.
+Le forfait gratuit de Resend n'autorise qu'un seul domaine vérifié, et il est
+déjà pris. Ça ne pose pas de problème : ce courriel est une notification
+interne, envoyée à `info@woodez.ca`, et le bouton **Répondre** écrit
+directement au visiteur. Le domaine de l'expéditeur ne sert qu'à prouver au
+serveur de réception que le message est légitime.
+
+Le jour où le site enverra de vrais courriels aux clients — un accusé de
+réception, par exemple — il faudra vérifier `woodez.ca` chez Resend, ce qui
+demande le forfait payant ou de libérer le domaine actuel.
