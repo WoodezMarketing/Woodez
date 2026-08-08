@@ -127,6 +127,15 @@
     display: block;
   }
 
+  /* Bande qu'on fait glisser au doigt sans voir de barre de défilement. */
+  .sans-barre {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .sans-barre::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Le trait épais du langage sticker de la marque */
   .sticker {
     border: 3px solid var(--color-ink);
