@@ -17,8 +17,8 @@ export default function Home() {
         <Hero />
         <Marquee />
         <Reveal />
-        <Services />
         <Creations />
+        <Services />
         <Comparison />
         <Faq />
         <FinalCta />

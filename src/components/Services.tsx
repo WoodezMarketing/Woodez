@@ -8,8 +8,8 @@ import { Sticker } from "./ui"
 
 const TONES: Record<string, { card: string; chip: string }> = {
   green: { card: "bg-green text-cream", chip: "bg-cream text-ink" },
-  sky: { card: "bg-sky text-ink", chip: "bg-cream text-ink" },
-  coral: { card: "bg-coral text-ink", chip: "bg-cream text-ink" },
+  sky: { card: "bg-sky text-cream", chip: "bg-cream text-ink" },
+  coral: { card: "bg-coral text-cream", chip: "bg-cream text-ink" },
 }
 
 /** Inclinaison de repos de chaque carte, en degrés. Assez faible pour rester

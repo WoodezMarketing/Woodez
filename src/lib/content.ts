@@ -91,12 +91,12 @@ export const content = {
     columns: ["Woodez", "Agence classique", "À l'interne"],
     /** oui | bof | non — se lit d'un coup d'œil, sans rien avoir à lire. */
     rows: [
-      { label: "Design 100 % sur mesure", values: ["oui", "non", "bof"] },
-      { label: "Stratégie et créatif réunis", values: ["oui", "bof", "non"] },
+      { label: "Spécialisé en ecommerce", values: ["oui", "bof", "non"] },
+      { label: "Design, rédaction et stratégie inclus", values: ["oui", "bof", "non"] },
       { label: "Le fondateur sur ton compte", values: ["oui", "non", "non"] },
-      { label: "En ligne en 14 jours", values: ["oui", "non", "non"] },
+      { label: "Sans contrat imposé", values: ["oui", "non", "bof"] },
       { label: "Prix adapté à ta taille", values: ["oui", "non", "bof"] },
-      { label: "Sans engagement", values: ["oui", "non", "bof"] },
+      { label: "En ligne en 14 jours", values: ["oui", "non", "non"] },
     ],
     legend: { oui: "Inclus", bof: "Ça dépend", non: "Non" },
   },
@@ -106,7 +106,7 @@ export const content = {
     title: ["On te", "répond"],
     items: [
       {
-        q: "Combien ça coûte ?",
+        q: "Combien ça coûte faire affaire avec Woodez ?",
         a: "Ça dépend de ta taille et de tes besoins. Une marque qui démarre n'a pas besoin du même service qu'une marque qui fait des centaines de milliers de dollars. On regarde ta situation, puis on te propose une offre à ta mesure, sans forfait imposé.",
       },
       {
@@ -119,7 +119,7 @@ export const content = {
       },
       {
         q: "Est-ce qu'il y a un contrat à long terme ?",
-        a: "Non. On travaille mois par mois. Si on fait bien notre travail, tu restes, c'est notre seul argument de rétention.",
+        a: "Par défaut on travaille mois par mois : si on fait bien notre travail, tu restes. Cela dit, un engagement plus long est possible si tu le préfères, et il vient généralement avec un meilleur tarif. C'est toi qui choisis.",
       },
       {
         q: "Est-ce que vous utilisez l'IA ?",
