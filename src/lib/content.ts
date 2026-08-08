@@ -84,12 +84,6 @@ export const content = {
     ],
   },
 
-  creations: {
-    eyebrow: "Nos créations",
-    title: ["Des emails", "qu'on a envie", "d'ouvrir"],
-    lead: "Chaque marque a son univers. On le respecte, puis on le pousse plus loin.",
-  },
-
   comparison: {
     eyebrow: "Pourquoi nous",
     title: ["Woodez", "le reste"],
