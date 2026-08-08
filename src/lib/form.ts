@@ -27,7 +27,7 @@ export type Path = {
   label: string
   blurb: string
   icon: string
-  tone: "green" | "sky" | "lemon"
+  tone: "green" | "sky" | "coral"
   steps: Step[]
 }
 
@@ -249,7 +249,7 @@ export const PATHS: Path[] = [
     label: "Autre chose",
     blurb: "Design, direction artistique, ou un projet à part.",
     icon: "target",
-    tone: "lemon",
+    tone: "coral",
     steps: [
       { id: "prenom", kind: "text", question: "On se présente ?", hint: "Ton nom, tout simplement.", placeholder: "Prénom et nom" },
       { id: "entreprise", kind: "text", question: "Le nom de ton entreprise ?", placeholder: "Nom de la boutique" },

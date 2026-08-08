@@ -9,8 +9,8 @@ import { Sticker } from "./ui"
 
 const TONES: Record<Path["tone"], string> = {
   green: "bg-green text-cream",
-  sky: "bg-sky text-ink",
-  lemon: "bg-lemon text-ink",
+  sky: "bg-sky text-cream",
+  coral: "bg-coral text-cream",
 }
 
 export default function StartForm() {

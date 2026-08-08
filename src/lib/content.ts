@@ -110,7 +110,7 @@ export const content = {
         a: "Ça dépend de ta taille et de tes besoins. Une marque qui démarre n'a pas besoin du même service qu'une marque qui fait des centaines de milliers de dollars. On regarde ta situation, puis on te propose une offre à ta mesure, sans forfait imposé.",
       },
       {
-        q: "Tu travailles avec quelle plateforme ?",
+        q: "Woodez travaille avec quelle plateforme ?",
         a: "Klaviyo principalement, parce que c'est ce qui donne les meilleurs résultats en ecommerce. On s'intègre aussi avec Shopify, WooCommerce et la plupart des outils que tu utilises déjà. Si tu es ailleurs, on s'occupe de la migration.",
       },
       {
